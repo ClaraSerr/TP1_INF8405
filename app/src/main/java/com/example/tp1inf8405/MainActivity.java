@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void moreinf(View v){
+        //test
         Intent i= new Intent(this, More_Information.class);
         startActivity(i);
     }
