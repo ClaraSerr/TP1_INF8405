@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void moreinf(View v){
-        //test from Studio
+        //test from Studio 2
         Intent i= new Intent(this, More_Information.class);
         startActivity(i);
     }
