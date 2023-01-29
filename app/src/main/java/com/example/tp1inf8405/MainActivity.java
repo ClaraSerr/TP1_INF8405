@@ -28,4 +28,9 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    public void play(View v){
+        Intent i = new Intent(this, GameTest.class);
+        startActivity(i);
+    }
+
 }
