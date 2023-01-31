@@ -22,6 +22,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void play(View v){
+        Intent i= new Intent(this, Game_main.class);
+        startActivity(i);
+    }
+
     public void exit() {
         // super.onBackPressed();
         finish();
