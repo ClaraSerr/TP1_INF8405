@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/all_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/game_box"
+        android:layout_width="392dp"
+        android:layout_height="699dp"
+        android:layout_marginBottom="132dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="1dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="384dp"
+            android:layout_height="194dp"
+            tools:layout_editor_absoluteX="2dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="110dp"
+                android:layout_height="198dp"
+                tools:layout_editor_absoluteX="271dp"
+                tools:layout_editor_absoluteY="0dp">
+
+                <LinearLayout
+                    android:layout_width="108dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.90999997"
+                    tools:layout_editor_absoluteX="1dp">
+
+                    <TextView
+                        android:id="@+id/moves_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TextView"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/record"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TextView"
+                        android:textAlignment="center" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="385dp"
+            android:layout_height="196dp"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="2dp"
+            tools:layout_editor_absoluteY="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="270dp"
+                android:layout_height="194dp">
+
+                <LinearLayout
+                    android:layout_width="268dp"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="2dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:layout_editor_absoluteX="1dp">
+
+                    <ImageButton
+                        android:id="@+id/previous"
+                        android:layout_width="66dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@android:drawable/ic_media_rew" />
+
+                    <TextView
+                        android:id="@+id/Puzzle_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="Puzzle"
+                        android:textAlignment="center" />
+
+                    <ImageButton
+                        android:id="@+id/next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@android:drawable/ic_media_ff" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="390dp"
+        android:layout_height="122dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="709dp">
+
+        <Button
+            android:id="@+id/pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pause"
+            tools:layout_editor_absoluteX="19dp"
+            tools:layout_editor_absoluteY="24dp" />
+
+        <Button
+            android:id="@+id/cancel_move"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            tools:layout_editor_absoluteX="178dp"
+            tools:layout_editor_absoluteY="24dp" />
+
+        <Button
+            android:id="@+id/restart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Restart"
+            tools:layout_editor_absoluteX="281dp"
+            tools:layout_editor_absoluteY="24dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
