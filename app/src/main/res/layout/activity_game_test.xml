@@ -8,38 +8,21 @@
 
     <ImageView
         android:id="@+id/bloc"
-        android:layout_width="82dp"
-        android:layout_height="141dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="96dp"
+        android:layout_width="105dp"
+        android:layout_height="143dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/btn_default_small" />
 
-    <TableLayout
-        android:layout_width="409dp"
-        android:layout_height="542dp"
+    <androidx.gridlayout.widget.GridLayout
+        android:layout_width="357dp"
+        android:layout_height="435dp"
+        android:layout_marginBottom="96dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.703"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    </androidx.gridlayout.widget.GridLayout>
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

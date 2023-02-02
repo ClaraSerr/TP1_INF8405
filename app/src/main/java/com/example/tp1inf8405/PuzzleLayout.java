@@ -12,52 +12,61 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class PuzzleLayout extends ConstraintLayout {
     private int numColumns;
     private int numRows;
+    private Paint paint;
 
-    public PuzzleLayout(Context context, int columns, int rows){
-        super(context);
-        this.numColumns = columns;
-        this.numRows = rows;
+    public PuzzleLayout(Context context, AttributeSet attrs, int defStyleAttr, int numColumns, int numRows) {
+        super(context, attrs, defStyleAttr);
+        this.numColumns = numColumns;
+        this.numRows = numRows;
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        this.paint = paint;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int width = getMeasuredWidth();
-        int height = getMeasuredHeight();
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+
+        int cellWidth = width / numColumns;
+        int cellHeight = height / numRows;
+
         setMeasuredDimension(width, height);
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        int width = getWidth();
-        int height = getHeight();
+        int childCount = getChildCount();
+        int cellWidth = getWidth() / numColumns;
+        int cellHeight = getHeight() / numRows;
 
-        // Divide the layout into a grid using the number of columns and rows
-        for (int i = 0; i < getChildCount(); i++) {
+        for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
-            // Position the child views accordingly
+
+            int column = i % numColumns;
+            int row = i / numColumns;
+
+            int leftPos = column * cellWidth;
+            int topPos = row * cellHeight;
+
+            child.layout(leftPos, topPos, leftPos + cellWidth, topPos + cellHeight);
         }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int width = getWidth();
-        int height = getHeight();
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(5);
 
-        // Draw the lines of the grid using the number of columns and rows
-        for (int i = 1; i < numColumns; i++) {
-            float x = width * i / numColumns;
-            canvas.drawLine(x, 0, x, height, paint);
+        // Draw horizontal lines
+        for (int i = 1; i < numRows; i++) {
+            int y = i * (getHeight() / numRows);
+            canvas.drawLine(0, y, getWidth(), y, paint);
         }
 
-        for (int i = 1; i < numRows; i++) {
-            float y = height * i / numRows;
-            canvas.drawLine(0, y, width, y, paint);
+        // Draw vertical lines
+        for (int i = 1; i < numColumns; i++) {
+            int x = i * (getWidth() / numColumns);
+            canvas.drawLine(x, 0, x, getHeight(), paint);
         }
     }
 
