@@ -8,21 +8,52 @@
 
     <ImageView
         android:id="@+id/bloc"
-        android:layout_width="105dp"
-        android:layout_height="143dp"
+        android:layout_width="85dp"
+        android:layout_height="118dp"
+        android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.319"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/btn_default_small" />
 
     <androidx.gridlayout.widget.GridLayout
-        android:layout_width="357dp"
-        android:layout_height="435dp"
-        android:layout_marginBottom="96dp"
+        android:layout_width="381dp"
+        android:layout_height="415dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.703"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.613">
 
+        <TextView
+            android:id="@+id/txtr"
+            android:layout_width="30dp"
+            android:layout_height="100dp"
+            android:background="#E60C0C"
+            android:text="CAR1"
+            app:layout_column="0"
+            app:layout_row="0" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:background="#0CE643"
+            android:text="car2"
+            app:layout_column="0"
+            app:layout_row="1" />
     </androidx.gridlayout.widget.GridLayout>
+
+    <ImageView
+        android:id="@+id/bloc3"
+        android:layout_width="105dp"
+        android:layout_height="143dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="556dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/btn_default_small" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
