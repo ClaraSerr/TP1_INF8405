@@ -1,23 +1,23 @@
 package com.example.tp1inf8405;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
-public class GameActivity extends Activity {
+public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_main);
+        Grid grid = GridLoader.loadFromFile(this, "grid.txt");
+
+        GridDisplay gridDisplay = new GridDisplay(this, grid);
+        setContentView(gridDisplay);
 
     }
 
     public void restart(View view) {
 
-        Grid grid = GridLoader.loadFromFile("grid.txt");
+        Grid grid = GridLoader.loadFromFile(this, "grid.txt");
 
         GridDisplay gridDisplay = new GridDisplay(this, grid);
         setContentView(gridDisplay);

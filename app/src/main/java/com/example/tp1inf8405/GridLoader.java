@@ -1,13 +1,17 @@
 package com.example.tp1inf8405;
 
+import android.content.Context;
+
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class GridLoader {
-    public static Grid loadFromFile(String fileName) {
+    public static Grid loadFromFile(Context context, String fileName) {
         Grid grid = null;
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+        try (InputStream is = context.getAssets().open(fileName);
+             BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             int size = Integer.parseInt(br.readLine());
             grid = new Grid(size);
 
@@ -23,6 +27,8 @@ public class GridLoader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return grid;
     }
 }
+

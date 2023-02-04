@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -111,7 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:text="Number_of_Moves"
+                android:text="TextView"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:layout_editor_absoluteX="0dp" />
@@ -120,12 +119,11 @@
                 android:id="@+id/record"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Personal_Record"
+                android:text="TextView"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toTopOf="@+id/moves_number"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_editor_absoluteX="0dp" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
