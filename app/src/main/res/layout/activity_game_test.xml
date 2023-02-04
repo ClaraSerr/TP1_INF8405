@@ -196,7 +196,7 @@
             app:layout_rowSpan="1" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/car2"
             android:layout_width="50dp"
             android:layout_height="150dp"
             android:background="#E60C0C"
@@ -210,7 +210,7 @@
             android:layout_width="50dp"
             android:layout_height="100dp"
             android:background="#E60C0C"
-            android:text="CAR1"
+            android:text="car3"
             app:layout_column="1"
             app:layout_row="3"
             app:layout_rowSpan="2" />
@@ -220,7 +220,7 @@
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:background="#E60C0C"
-            android:text="CAR1"
+            android:text="car4"
             app:layout_column="1"
             app:layout_columnSpan="3"
             app:layout_row="5"
@@ -231,7 +231,7 @@
             android:layout_width="50dp"
             android:layout_height="100dp"
             android:background="#E60C0C"
-            android:text="CAR1"
+            android:text="car5"
             app:layout_column="5"
             app:layout_columnSpan="1"
             app:layout_row="4"
@@ -242,7 +242,7 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:background="#E60C0C"
-            android:text="CAR1"
+            android:text="car6"
             app:layout_column="5"
             app:layout_columnSpan="2"
             app:layout_row="3"
@@ -253,7 +253,7 @@
             android:layout_width="50dp"
             android:layout_height="150dp"
             android:background="#E60C0C"
-            android:text="CAR1"
+            android:text="car7"
             app:layout_column="6"
             app:layout_columnSpan="1"
             app:layout_row="0"
