@@ -135,6 +135,16 @@
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="143dp">
 
+        <TextView
+            android:id="@+id/moves_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
