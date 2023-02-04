@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void play(View v){
-        Intent i= new Intent(this, Game_main.class);
+        Intent i= new Intent(this, GameActivity.class);
         startActivity(i);
     }
 
