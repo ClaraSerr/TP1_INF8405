@@ -4,12 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.GridLayout;
+import androidx.gridlayout.widget.GridLayout;;
 
 public class GameTest extends AppCompatActivity {
     float xDown = 0, yDown = 0;
@@ -56,7 +57,9 @@ public class GameTest extends AppCompatActivity {
                     case MotionEvent.ACTION_DOWN:
                         xDown = event.getX();
                         yDown = event.getY();
+                        Log.d("DOWN","Car1 was touched");
                         break;
+
                     case MotionEvent.ACTION_MOVE:
                         float movedX, movedY;
                         movedX = event.getX();
@@ -70,13 +73,16 @@ public class GameTest extends AppCompatActivity {
                         float dpDeltaX = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, distanceX, resources.getDisplayMetrics());
                         float dpDeltaY = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, distanceY, resources.getDisplayMetrics());
                         GridLayout.LayoutParams layoutParams = (GridLayout.LayoutParams) v.getLayoutParams();
-
+                        Log.d("MOVE","CAR1 was moved");
+                        Log.d("PARAM",v.getLayoutParams().toString());
+                        Log.d("column",layoutParams.columnSpec.toString());
                         if (dpDeltaX > 50) {
-                            //layoutParams.columnSpec = layoutParams.columnSpec + 1;
+                            //GridLayout.Spec columnSpec = layoutParams.columnSpec;
+                            //int columnSpan = columnSpec.column;
                         } else if (dpDeltaY < -50) {
                             //layoutParams.rowSpec = GridLayout.spec(layoutParams.rowSpec.getGridIndex() + 1);
                         }
-                        v.setLayoutParams(layoutParams);
+                        //v.setLayoutParams(layoutParams);
                         break;
 
 
