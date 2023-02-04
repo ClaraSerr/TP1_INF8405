@@ -53,18 +53,30 @@ public class GameTest extends AppCompatActivity {
         }
 
         public void incCol(){
-            if (((this.col + 1) > 0) & ((this.col + 1) < 8 )){
+            int test =  0;
+            if (this.column_span>1) {
+                test = this.col + 1 + this.column_span;
+            }else{
+                test = this.col + 1;
+            }
+            if (test < 8 ){
                 this.col = this.col +1;
             }
         }
         public void decCol(){
-            if (((this.col - 1) > 0) & ((this.col - 1) < 8 )){
+            if (((this.col - 1) > 0)){
                 this.col = this.col -1;
             }
         }
 
         public void incRow(){
-            if ((this.row + 1) < 6 ){
+            int test =  0;
+            if (this.row_span>1) {
+                test = this.row + 1 + this.row_span ;
+            }else{
+                test = this.row + 1;
+            }
+            if ((test) < 6 ){
                 this.row = this.row +1;
             }
         }
@@ -129,6 +141,7 @@ public class GameTest extends AppCompatActivity {
 
                     case MotionEvent.ACTION_MOVE:
                         float movedX, movedY;
+                        boolean wasmoved = false;
                         movedX = event.getX();
                         movedY = event.getY();
                         // calculate how much the user moviedhis finger
@@ -143,19 +156,27 @@ public class GameTest extends AppCompatActivity {
                         Log.d("MOVE","CAR1 was moved");
                         Log.d("PARAM",v.getLayoutParams().toString());
                         Log.d("column",layoutParams.columnSpec.toString());
-                        if (dpDeltaX > 50) {
+                        if (dpDeltaX > 100) {
                             car1_bloc.incCol();
-                        } else if (dpDeltaX < -50) {
+                            wasmoved = true;
+                        } if (dpDeltaX < -100) {
                             car1_bloc.decCol();
-                        } else if (dpDeltaY < -50) {
+                            wasmoved = true;
+                        } if (dpDeltaY < -100) {
                             car1_bloc.decRow();
-                        } else if (dpDeltaY > 50) {
+                            wasmoved = true;
+                        } if (dpDeltaY > 100) {
                             car1_bloc.incRow();
+                            wasmoved = true;
                         }
                         layoutParams.columnSpec = GridLayout.spec(car1_bloc.col,car1_bloc.column_span);
                         layoutParams.rowSpec =  GridLayout.spec(car1_bloc.row,car1_bloc.row_span);
                         Log.d("Result",car1_bloc.toString());
-                        car1_bloc.view.setLayoutParams(layoutParams);
+                        if (wasmoved = true){
+                            car1_bloc.view.setLayoutParams(layoutParams);
+                            wasmoved = false;
+                        }
+                        //car1_bloc.view.setLayoutParams(layoutParams);
                         break;
 
 
