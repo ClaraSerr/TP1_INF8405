@@ -75,7 +75,7 @@
             app:layout_rowSpan="1" />
 
         <TextView
-            android:id="@+id/pat1"
+            android:id="@+id/pat5"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="#E1F1E576"
@@ -86,7 +86,7 @@
             app:layout_rowSpan="1" />
 
         <TextView
-            android:id="@+id/pat1"
+            android:id="@+id/pat6"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="#E1F1E576"
@@ -97,7 +97,7 @@
             app:layout_rowSpan="1" />
 
         <TextView
-            android:id="@+id/pat2"
+            android:id="@+id/pat7"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="#3CC394"
@@ -108,7 +108,7 @@
             app:layout_rowSpan="1" />
 
         <TextView
-            android:id="@+id/pat2"
+            android:id="@+id/pat8"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="#3CC394"
@@ -119,7 +119,7 @@
             app:layout_rowSpan="1" />
 
         <TextView
-            android:id="@+id/pat2"
+            android:id="@+id/pat9"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="#3CC394"
@@ -130,7 +130,7 @@
             app:layout_rowSpan="1" />
 
         <TextView
-            android:id="@+id/pat2"
+            android:id="@+id/pat10"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="#3CC394"
@@ -141,7 +141,7 @@
             app:layout_rowSpan="1" />
 
         <TextView
-            android:id="@+id/pat2"
+            android:id="@+id/pat11"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="#3CC394"
@@ -152,7 +152,7 @@
             app:layout_rowSpan="1" />
 
         <TextView
-            android:id="@+id/pat2"
+            android:id="@+id/pat12"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="#3CC394"
@@ -163,7 +163,7 @@
             app:layout_rowSpan="1" />
 
         <TextView
-            android:id="@+id/pat2"
+            android:id="@+id/pat13"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="#3CC394"
@@ -249,7 +249,7 @@
             app:layout_rowSpan="1" />
 
         <TextView
-            android:id="@+id/car6"
+            android:id="@+id/car7"
             android:layout_width="50dp"
             android:layout_height="150dp"
             android:background="#E60C0C"
