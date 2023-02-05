@@ -25,7 +25,7 @@ public class GameTest extends AppCompatActivity {
         int row_span;
         int column_span;
         View view;
-        int type; //0 if vertical, 1 if horizontal
+        boolean isHorizontal; //0 if vertical, 1 if horizontal
         Bloc (int row, int col, int row_span, int col_span, View v, String name){
             this.row = row;
             this.col = col;
@@ -33,11 +33,11 @@ public class GameTest extends AppCompatActivity {
             this.column_span = col_span;
             this.view = v;
             this.name = name;
-            if (row > col) {
-                this.type = 0;
+            if (row_span > col_span) {
+                this.isHorizontal = false;
             }
             else{
-                this.type = 1;
+                this.isHorizontal = true;
             }
         }
 
@@ -49,7 +49,7 @@ public class GameTest extends AppCompatActivity {
             res += "row_span = " + Integer.toString(row_span) + " \n ";
             res += "col = " + Integer.toString(col) + " \n ";
             res += "column_span = " + Integer.toString(column_span) + " \n ";
-
+            res += "horizontal = " + Boolean.toString(isHorizontal) + " \n";
             return res;
             //return super.toString();
         }
@@ -86,6 +86,8 @@ public class GameTest extends AppCompatActivity {
             if ((this.row - 1) > -1 ){
             this.row = this.row -1;}
         }
+
+
     }
 
 
@@ -153,11 +155,14 @@ public class GameTest extends AppCompatActivity {
         }
 
         public boolean canMoveDown(Bloc b) {
+            //Here we test occupency and boundaries differently because it is tricky. row_span 0 and 11 basically have the same effect so we have to be smart
             for (int j = b.col; j < b.col + b.column_span; j++) {
                 if (b.row + b.row_span >= this.height || isOccupied(b.row + b.row_span, j)) {
                     return false;
                 }
             }
+
+
             return true;
         }
         @NonNull
@@ -193,7 +198,92 @@ public class GameTest extends AppCompatActivity {
         game.addBloc(car1_bloc);
         game.addBloc(car7_bloc);
         Log.d("grid",game.toString());
+        Log.d("car1",car1_bloc.toString());
+        Log.d("car7",car7_bloc.toString());
+        ArrayList<Bloc> aList = game.blocs;
 
+        for (Bloc x : aList) {
+            x.view.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getActionMasked()) {
+                        case MotionEvent.ACTION_DOWN:
+                            xDown = event.getX(); // need to update this when you moove to correct jittering effect
+                            yDown = event.getY();
+                            Log.d("DOWN","Car1 was touched");
+                            Log.d("grid",game.toString());
+                            break;
+
+                        case MotionEvent.ACTION_MOVE:
+                            float movedX, movedY;
+                            boolean wasmoved = false;
+                            movedX = event.getX();
+                            movedY = event.getY();
+                            // calculate how much the user moviedhis finger
+                            float distanceX = movedX - xDown;
+                            float distanceY = movedY - yDown;
+
+                            //now updated position
+                            Resources resources = v.getContext().getResources();
+                            float dpDeltaX = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, distanceX, resources.getDisplayMetrics());
+                            float dpDeltaY = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, distanceY, resources.getDisplayMetrics());
+                            GridLayout.LayoutParams layoutParams = (GridLayout.LayoutParams) v.getLayoutParams();
+                            Log.d("MOVE","CAR1 was moved");
+                            Log.d("PARAM",v.getLayoutParams().toString());
+                            Log.d("column",layoutParams.columnSpec.toString());
+                            if (dpDeltaX > 100) {
+                                if ((game.canMoveRight(x)) && (x.isHorizontal)){
+                                    game.removeBloc(x);
+                                    x.incCol();
+                                    game.addBloc(x);
+                                    wasmoved = true;
+                                }
+                            }
+                            if (dpDeltaX < -100) {
+                                if ((game.canMoveLeft(x)) && (x.isHorizontal)){
+                                    game.removeBloc(x);
+                                    x.decCol();
+                                    game.addBloc(x);
+                                    wasmoved = true;
+                                }
+                            }
+                            if (dpDeltaY < -100) {
+                                if ((game.canMoveDown(x)) && (!x.isHorizontal)){
+                                        game.removeBloc(x);
+                                        x.decRow();
+                                        game.addBloc(x);
+                                        wasmoved = true;
+                                }
+                            //car1_bloc.decRow();
+                            wasmoved = true;
+                            }
+                            if (dpDeltaY > 100) {
+                                if ((game.canMoveUp(x)) && (!x.isHorizontal)){
+                                    game.removeBloc(x);
+                                    x.incRow();
+                                    game.addBloc(x);
+                                    wasmoved = true;
+                                }
+                            //car1_bloc.incRow();
+                            wasmoved = true;
+                        }
+                            layoutParams.columnSpec = GridLayout.spec(x.col,x.column_span);
+                            layoutParams.rowSpec =  GridLayout.spec(x.row,x.row_span);
+                            Log.d("Result",x.toString());
+                            if (wasmoved = true){
+                                x.view.setLayoutParams(layoutParams);
+                                Log.d("grid",game.toString());
+                                wasmoved = false;
+                            }
+                            //car1_bloc.view.setLayoutParams(layoutParams);
+                            break;
+
+                    }
+
+                    return true;
+                }
+            });
+        }
 
         bloc.setOnTouchListener(new View.OnTouchListener(){
 
@@ -223,74 +313,7 @@ public class GameTest extends AppCompatActivity {
                 return true;
             }
         });
-        car1_bloc.view.setOnTouchListener(new View.OnTouchListener(){
 
-
-            public boolean onTouch(View v, MotionEvent event){
-
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                        xDown = event.getX(); // need to update this when you moove to correct jittering effect
-                        yDown = event.getY();
-                        Log.d("DOWN","Car1 was touched");
-                        Log.d("grid",game.toString());
-                        break;
-
-                    case MotionEvent.ACTION_MOVE:
-                        float movedX, movedY;
-                        boolean wasmoved = false;
-                        movedX = event.getX();
-                        movedY = event.getY();
-                        // calculate how much the user moviedhis finger
-                        float distanceX = movedX - xDown;
-                        float distanceY = movedY - yDown;
-
-                        //now updated position
-                        Resources resources = v.getContext().getResources();
-                        float dpDeltaX = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, distanceX, resources.getDisplayMetrics());
-                        float dpDeltaY = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, distanceY, resources.getDisplayMetrics());
-                        GridLayout.LayoutParams layoutParams = (GridLayout.LayoutParams) v.getLayoutParams();
-                        Log.d("MOVE","CAR1 was moved");
-                        Log.d("PARAM",v.getLayoutParams().toString());
-                        Log.d("column",layoutParams.columnSpec.toString());
-                        if (dpDeltaX > 100) {
-                            if (game.canMoveRight(car1_bloc)){
-                                game.removeBloc(car1_bloc);
-                                car1_bloc.incCol();
-                                game.addBloc(car1_bloc);
-                                wasmoved = true;
-                            }
-                        } if (dpDeltaX < -100) {
-                            if (game.canMoveLeft(car1_bloc)){
-                                game.removeBloc(car1_bloc);
-                                car1_bloc.decCol();
-                                game.addBloc(car1_bloc);
-                                wasmoved = true;
-                            }
-                        } if (dpDeltaY < -100) {
-                            //car1_bloc.decRow();
-                            wasmoved = true;
-                        } if (dpDeltaY > 100) {
-                            //car1_bloc.incRow();
-                            wasmoved = true;
-                        }
-                        layoutParams.columnSpec = GridLayout.spec(car1_bloc.col,car1_bloc.column_span);
-                        layoutParams.rowSpec =  GridLayout.spec(car1_bloc.row,car1_bloc.row_span);
-                        Log.d("Result",car1_bloc.toString());
-                        if (wasmoved = true){
-                            car1_bloc.view.setLayoutParams(layoutParams);
-                            Log.d("grid",game.toString());
-                            wasmoved = false;
-                        }
-                        //car1_bloc.view.setLayoutParams(layoutParams);
-                        break;
-
-
-
-                }
-                return true;
-            }
-        });
 
     }
 }
