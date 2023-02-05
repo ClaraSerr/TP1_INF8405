@@ -72,15 +72,7 @@ public class GameTest extends AppCompatActivity {
         }
 
         public void incRow(){
-            int test =  0;
-            if (this.row_span>1) {
-                test = this.row + 1 + this.row_span ;
-            }else{
-                test = this.row + 1;
-            }
-            if ((test) < 6 ){
-                this.row = this.row +1;
-            }
+            this.row = this.row +1;
         }
         public void decRow(){
             if ((this.row - 1) > -1 ){
@@ -157,7 +149,7 @@ public class GameTest extends AppCompatActivity {
         public boolean canMoveDown(Bloc b) {
             //Here we test occupency and boundaries differently because it is tricky. row_span 0 and 11 basically have the same effect so we have to be smart
             for (int j = b.col; j < b.col + b.column_span; j++) {
-                if (b.row + b.row_span >= this.height || isOccupied(b.row + b.row_span, j)) {
+                if ((b.row + (b.row_span) >= (this.height -1)) || isOccupied(b.row + b.row_span, j)) {
                     return false;
                 }
             }
@@ -248,21 +240,25 @@ public class GameTest extends AppCompatActivity {
                                 }
                             }
                             if (dpDeltaY < -100) {
-                                if ((game.canMoveDown(x)) && (!x.isHorizontal)){
+                                Log.d("UP","mooving up");
+                                if ((game.canMoveUp(x)) && (!x.isHorizontal)){
                                         game.removeBloc(x);
                                         x.decRow();
                                         game.addBloc(x);
+                                    Log.d("UP","nice you moved Up");
                                         wasmoved = true;
                                 }
                             //car1_bloc.decRow();
                             wasmoved = true;
                             }
                             if (dpDeltaY > 100) {
-                                if ((game.canMoveUp(x)) && (!x.isHorizontal)){
+                                Log.d("down","mooving down");
+                                if ((game.canMoveDown(x)) && (!x.isHorizontal)){
                                     game.removeBloc(x);
                                     x.incRow();
                                     game.addBloc(x);
                                     wasmoved = true;
+                                    Log.d("down","nice you moved down");
                                 }
                             //car1_bloc.incRow();
                             wasmoved = true;
