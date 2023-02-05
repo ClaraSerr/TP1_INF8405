@@ -177,17 +177,38 @@ public class GameTest extends AppCompatActivity {
         setContentView(R.layout.activity_game_test);
         ImageView bloc = findViewById(R.id.bloc);
 
+        View target = findViewById(R.id.target);
+        Bloc target_bloc = new Bloc(2,1,1,2, target, "car1");
+
         View car1 = findViewById(R.id.car1);
         Bloc car1_bloc = new Bloc(0,1,1,3, car1, "car1");
 
         View car2 = findViewById(R.id.car2);
         Bloc car2_bloc = new Bloc(1,3,3,1, car2,"car2");
 
+        View car3 = findViewById(R.id.car3);
+        Bloc car3_bloc = new Bloc(3,1,2,1, car3,"car3");
+
+        View car4 = findViewById(R.id.car4);
+        Bloc car4_bloc = new Bloc(5,1,1,3, car4,"car4");
+
+        View car5 = findViewById(R.id.car5);
+        Bloc car5_bloc = new Bloc(4,5,2,1, car5,"car5");
+
+        View car6 = findViewById(R.id.car6);
+        Bloc car6_bloc = new Bloc(3,5,1,2, car6,"car6");
+
         View car7 = findViewById(R.id.car7);
         Bloc car7_bloc = new Bloc(0,6,3,1,car7,"car7");
 
         Grid game = new Grid(7,7);
+        game.addBloc(target_bloc);
         game.addBloc(car1_bloc);
+        game.addBloc(car2_bloc);
+        game.addBloc(car3_bloc);
+        game.addBloc(car4_bloc);
+        game.addBloc(car5_bloc);
+        game.addBloc(car6_bloc);
         game.addBloc(car7_bloc);
         Log.d("grid",game.toString());
         Log.d("car1",car1_bloc.toString());
