@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.gridlayout.widget.GridLayout;
 
+import java.util.ArrayList;
+
 public class GameTest extends AppCompatActivity {
     float xDown = 0, yDown = 0;
 
@@ -42,11 +44,11 @@ public class GameTest extends AppCompatActivity {
         @NonNull
         @Override
         public String toString() {
-            String res = "for car " + this.name + " /n ";
-            res = res + "row = " + Integer.toString(row) + " /n ";
-            res += "row_span = " + Integer.toString(row_span) + " /n ";
-            res += "col = " + Integer.toString(col) + " /n ";
-            res += "column_span = " + Integer.toString(column_span) + " /n ";
+            String res = "for car " + this.name + " \n ";
+            res = res + "row = " + Integer.toString(row) + " \n ";
+            res += "row_span = " + Integer.toString(row_span) + " \n ";
+            res += "col = " + Integer.toString(col) + " \n ";
+            res += "column_span = " + Integer.toString(column_span) + " \n ";
 
             return res;
             //return super.toString();
@@ -85,6 +87,93 @@ public class GameTest extends AppCompatActivity {
             this.row = this.row -1;}
         }
     }
+
+
+    public class Grid {
+        ArrayList<Bloc> blocs;
+        int width;
+        int height;
+        int[][] grid;
+
+        public Grid(int width, int height) {
+            blocs = new ArrayList<>();
+            this.width=width;
+            this.height = height;
+            this.grid = new int[width][height];
+        }
+
+        public void addBloc(Bloc b) {
+            blocs.add(b);
+            for (int i = b.row; i < b.row + b.row_span; i++) {
+                for (int j = b.col; j < b.col + b.column_span; j++) {
+                    grid[i][j] = 1;
+                    //Log.d("grid",grid.toString());
+                }
+            }
+        }
+
+        public void removeBloc(Bloc b) {
+            blocs.remove(b);
+            for (int i = b.row; i < b.row + b.row_span; i++) {
+                for (int j = b.col; j < b.col + b.column_span; j++) {
+                    grid[i][j] = 0;
+                }
+            }
+        }
+
+        public boolean isOccupied(int row, int col) {
+            return grid[row][col] == 1;
+        }
+
+        public boolean canMoveLeft(Bloc b) {
+            for (int i = b.row; i < b.row + b.row_span; i++) {
+                if (b.col - 1 < 0 || isOccupied(i, b.col - 1)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public boolean canMoveRight(Bloc b) {
+            for (int i = b.row; i < b.row + b.row_span; i++) {
+                if (b.col + b.column_span >= this.width || isOccupied(i, b.col + b.column_span)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public boolean canMoveUp(Bloc b) {
+            for (int j = b.col; j < b.col + b.column_span; j++) {
+                if (b.row - 1 < 0 || isOccupied(b.row - 1, j)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public boolean canMoveDown(Bloc b) {
+            for (int j = b.col; j < b.col + b.column_span; j++) {
+                if (b.row + b.row_span >= this.height || isOccupied(b.row + b.row_span, j)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        @NonNull
+        @Override
+        public String toString(){
+            String aString = "\n";
+            for(int row = 0; row < grid.length; row++) {
+                for(int col = 0; col < grid[row].length; col++) {
+                    aString += " " + grid[row][col];
+                }
+                aString += "\r\n";
+            }
+            return aString;
+        }
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +186,13 @@ public class GameTest extends AppCompatActivity {
         View car2 = findViewById(R.id.car2);
         Bloc car2_bloc = new Bloc(1,3,3,1, car2,"car2");
 
+        View car7 = findViewById(R.id.car7);
+        Bloc car7_bloc = new Bloc(0,6,3,1,car7,"car7");
+
+        Grid game = new Grid(7,7);
+        game.addBloc(car1_bloc);
+        game.addBloc(car7_bloc);
+        Log.d("grid",game.toString());
 
 
         bloc.setOnTouchListener(new View.OnTouchListener(){
@@ -134,9 +230,10 @@ public class GameTest extends AppCompatActivity {
 
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
-                        xDown = event.getX();
+                        xDown = event.getX(); // need to update this when you moove to correct jittering effect
                         yDown = event.getY();
                         Log.d("DOWN","Car1 was touched");
+                        Log.d("grid",game.toString());
                         break;
 
                     case MotionEvent.ACTION_MOVE:
@@ -157,16 +254,24 @@ public class GameTest extends AppCompatActivity {
                         Log.d("PARAM",v.getLayoutParams().toString());
                         Log.d("column",layoutParams.columnSpec.toString());
                         if (dpDeltaX > 100) {
-                            car1_bloc.incCol();
-                            wasmoved = true;
+                            if (game.canMoveRight(car1_bloc)){
+                                game.removeBloc(car1_bloc);
+                                car1_bloc.incCol();
+                                game.addBloc(car1_bloc);
+                                wasmoved = true;
+                            }
                         } if (dpDeltaX < -100) {
-                            car1_bloc.decCol();
-                            wasmoved = true;
+                            if (game.canMoveLeft(car1_bloc)){
+                                game.removeBloc(car1_bloc);
+                                car1_bloc.decCol();
+                                game.addBloc(car1_bloc);
+                                wasmoved = true;
+                            }
                         } if (dpDeltaY < -100) {
-                            car1_bloc.decRow();
+                            //car1_bloc.decRow();
                             wasmoved = true;
                         } if (dpDeltaY > 100) {
-                            car1_bloc.incRow();
+                            //car1_bloc.incRow();
                             wasmoved = true;
                         }
                         layoutParams.columnSpec = GridLayout.spec(car1_bloc.col,car1_bloc.column_span);
@@ -174,6 +279,7 @@ public class GameTest extends AppCompatActivity {
                         Log.d("Result",car1_bloc.toString());
                         if (wasmoved = true){
                             car1_bloc.view.setLayoutParams(layoutParams);
+                            Log.d("grid",game.toString());
                             wasmoved = false;
                         }
                         //car1_bloc.view.setLayoutParams(layoutParams);
