@@ -16,13 +16,24 @@ public class GridLoader {
             grid = new Grid(size);
 
             String line;
+            boolean isFirstLine = true;
             while ((line = br.readLine()) != null) {
-                String[] tokens = line.split(" ");
-                int row = Integer.parseInt(tokens[0]);
-                int col = Integer.parseInt(tokens[1]);
-                Block.Orientation orientation = tokens[2].equals("HORIZONTAL") ? Block.Orientation.HORIZONTAL : Block.Orientation.VERTICAL;
-                Block block = new Block(row, col, orientation);
-                grid.addBlock(block);
+                if (isFirstLine) {
+                    String[] tokens = line.split(" ");
+                    int row = Integer.parseInt(tokens[0]);
+                    int col = Integer.parseInt(tokens[1]);
+                    Block.Orientation orientation = tokens[2].equals("HORIZONTAL") ? Block.Orientation.HORIZONTAL : Block.Orientation.VERTICAL;
+                    Block block = new RedBlock(row, col, orientation, false);
+                    grid.addBlock(block);
+                    isFirstLine = false;
+                } else {
+                    String[] tokens = line.split(" ");
+                    int row = Integer.parseInt(tokens[0]);
+                    int col = Integer.parseInt(tokens[1]);
+                    Block.Orientation orientation = tokens[2].equals("HORIZONTAL") ? Block.Orientation.HORIZONTAL : Block.Orientation.VERTICAL;
+                    Block block = new Block(row, col, orientation);
+                    grid.addBlock(block);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

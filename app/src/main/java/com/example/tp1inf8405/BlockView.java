@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.AttributeSet;
 import android.view.View;
 
 class BlockView extends View {
@@ -15,11 +14,14 @@ class BlockView extends View {
     public BlockView(Context context) {
         super(context);
         paint = new Paint();
-        paint.setColor(Color.RED);
+        paint.setColor(Color.BLUE);
     }
 
     public void setBlock(Block block) {
         this.block = block;
+        if (block instanceof RedBlock){
+            paint.setColor(Color.RED);
+        }
     }
 
     @Override
@@ -29,9 +31,9 @@ class BlockView extends View {
             int x = block.getX();
             int y = block.getY();
             if (block.isHorizontal()) {
-                canvas.drawRect(new Rect(x * getWidth() / 6, y * getHeight() / 6, (x + 2) * getWidth() / 6, (y + 1) * getHeight() / 6), paint);
+                canvas.drawRect(new Rect(x * getWidth() / 6, y * getWidth() / 6, (x + 2) * getWidth() / 6, (y + 1) * getWidth() / 6), paint);
             } else {
-                canvas.drawRect(new Rect(x * getWidth() / 6, y * getHeight() / 6, (x + 1) * getWidth() / 6, (y + 2) * getHeight() / 6), paint);
+                canvas.drawRect(new Rect(x * getWidth() / 6, y * getWidth() / 6, (x + 1) * getWidth() / 6, (y + 2) * getWidth() / 6), paint);
             }
         }
     }
