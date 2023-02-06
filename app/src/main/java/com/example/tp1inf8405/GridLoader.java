@@ -21,8 +21,8 @@ public class GridLoader {
                 int row = Integer.parseInt(tokens[0]);
                 int col = Integer.parseInt(tokens[1]);
                 Block.Orientation orientation = tokens[2].equals("HORIZONTAL") ? Block.Orientation.HORIZONTAL : Block.Orientation.VERTICAL;
-                Block block = new Block(orientation);
-                grid.addBlock(block, row, col);
+                Block block = new Block(row, col, orientation);
+                grid.addBlock(block);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -16,10 +16,6 @@ public class GameActivity extends AppCompatActivity {
 
         GridDisplay gridDisplay = new GridDisplay(this, grid);
         setContentView(gridDisplay);
-
-        TextView textView = new TextView(this);
-        textView.setText("Hello World");
-        setContentView(textView);
     }
 
     public void restart(View view) {
