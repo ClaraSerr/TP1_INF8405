@@ -379,9 +379,9 @@ public class GameTest extends AppCompatActivity {
                             Log.d("column",layoutParams.columnSpec.toString());
                             if (dpDeltaX > 100) {
                                 if ((game.canMoveRight(x)) && (x.isHorizontal)){
-                                    game.removeBloc(x);
-                                    x.incCol();
-                                    game.addBloc(x);
+                                    game.removeBloc(x); //SEIGNEUR, lorsque tu add et que tu remove le bloc, tu CHANGE sa posiution dans la grille
+                                    x.incCol(); // d'ou l'importance d'avoir une fonction move bloc
+                                    game.addBloc(x); //Et si on découplais ? on fait une fonction add et remove qui va juste pas affecter la liste initial quoi.
                                     wasmoved = true;
                                 }
                             }
