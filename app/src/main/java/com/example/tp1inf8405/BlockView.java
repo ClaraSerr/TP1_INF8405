@@ -5,14 +5,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 class BlockView extends View {
     private Block block;
     private Paint paint;
 
-    public BlockView(Context context) {
-        super(context);
+    public BlockView(Context context) {//ajouter parametre attrs
+        super(context);//ajouter parametre attrs
         paint = new Paint();
         paint.setColor(Color.BLUE);
     }
@@ -21,20 +25,19 @@ class BlockView extends View {
         this.block = block;
         if (block instanceof RedBlock){
             paint.setColor(Color.RED);
+            Log.d("BlockViewColor", "RED");
+        }else{
+            Log.d("BlockViewColor","BLUE");
         }
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        if (block != null) {
-            int x = block.getX();
-            int y = block.getY();
-            if (block.isHorizontal()) {
-                canvas.drawRect(new Rect(x * getWidth() / 6, y * getWidth() / 6, (x + 2) * getWidth() / 6, (y + 1) * getWidth() / 6), paint);
-            } else {
-                canvas.drawRect(new Rect(x * getWidth() / 6, y * getWidth() / 6, (x + 1) * getWidth() / 6, (y + 2) * getWidth() / 6), paint);
-            }
-        }
+    public Block getBlock(){
+        return this.block;
     }
+
+    public Paint getPaint(){
+        return this.paint;
+    }
+
+
 }

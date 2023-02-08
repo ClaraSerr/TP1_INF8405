@@ -10,9 +10,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         Grid grid = GridLoader.loadFromFile(this, "grid.txt");
-
         GridDisplay gridDisplay = new GridDisplay(this, grid);
         setContentView(gridDisplay);
     }
