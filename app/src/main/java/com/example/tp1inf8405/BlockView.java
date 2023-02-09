@@ -36,6 +36,7 @@ class BlockView extends View implements View.OnTouchListener{
             case MotionEvent.ACTION_DOWN:
                 dX =  (view.getX() - event.getRawX());
                 dY =  (view.getY() - event.getRawY());
+                Log.d("Touching screen", Float.toString(dY) + " : " + Float.toString(dX));
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (convertYXToRowCol(dX) < 1 && convertYXToRowCol(dX) < 1) {
@@ -43,9 +44,9 @@ class BlockView extends View implements View.OnTouchListener{
                     y = event.getRawY() + dY;
                     dX_new = (view.getX() - event.getRawX());
                     dY_new = (view.getY() - event.getRawY());
-                    colMove = convertYXToRowCol(dX_new - dX);
-                    rowMove = convertYXToRowCol(dY_new - dY);
-                    Log.d("CODE_0_BlockView", Float.toString(rowMove) + " : " + Integer.toString(convertYXToRowCol(colMove)));
+                    colMove = convertYXToRowCol(dX-dX_new);
+                    rowMove = convertYXToRowCol(dY-dY_new);
+                    Log.d("Moving on screen", Integer.toString(rowMove) + " : " + Integer.toString(colMove));
                     if (isHorizontal()) {
                         if (colMove > 1 && canMoveRight(this.getBlock())) {
                             this.moveRight();
@@ -109,7 +110,7 @@ class BlockView extends View implements View.OnTouchListener{
     }
 
     public Block getBlock(){
-        return this.getBlock();
+        return this.block;
     }
 
     public void moveUp() {

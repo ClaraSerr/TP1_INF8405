@@ -36,7 +36,7 @@ class Block {
         this.orientation = orientation;
         this.blockView = new BlockView(this,context);
         blockView.setBlockColor(this);
-        Log.d("CODE_1_Block", "Constructor");
+        Log.d("Constructing Block", Float.toString(row) + " : " + Integer.toString(col));
 
     }
 
@@ -66,18 +66,26 @@ class Block {
 
     public void moveUp() {
         this.row--;
+        this.getGrid().updateGridMoveUp(this);
+        Log.d("Moving Block Up", Integer.toString(row) + " : " + Integer.toString(col));
     }
 
     public void moveDown() {
         this.col++;
+        this.getGrid().updateGridMoveDown(this);
+        Log.d("Moving Block Down", Integer.toString(row) + " : " + Integer.toString(col));
     }
 
     public void moveLeft() {
         this.row--;
+        this.getGrid().updateGridMoveLeft(this);
+        Log.d("Moving Block Left", Integer.toString(row) + " : " + Integer.toString(col));
     }
 
     public void moveRight() {
         this.col++;
+        this.getGrid().updateGridMoveRight(this);
+        Log.d("Moving Block Right", Integer.toString(row) + " : " + Integer.toString(col));
     }
 
 
