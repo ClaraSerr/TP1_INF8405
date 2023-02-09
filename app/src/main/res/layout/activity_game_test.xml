@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/btn_default_small" />
 
-    <androidx.gridlayout.widget.GridLayout
+    <GridLayout
         android:layout_width="350dp"
         android:layout_height="350dp"
         app:columnCount="7"
@@ -259,7 +259,7 @@
             app:layout_row="0"
             app:layout_rowSpan="3" />
 
-    </androidx.gridlayout.widget.GridLayout>
+    </GridLayout>
 
     <Button
         android:id="@+id/reset"
