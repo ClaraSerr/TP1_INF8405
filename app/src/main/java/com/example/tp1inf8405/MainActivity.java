@@ -19,13 +19,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void moreinf(View v){
         //test from Studio 3
-        Intent i= new Intent(this, More_Information.class);
+        Intent i = new Intent(this, More_Information.class);
         startActivity(i);
     }
 
     public void exit() {
         // super.onBackPressed();
         finish();
+    }
+
+    public void launchPlay(View v){
+        Intent i = new Intent(this, GameActivity.class);
+        startActivity(i);
     }
 
 }
