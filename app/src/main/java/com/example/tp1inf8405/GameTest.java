@@ -149,15 +149,36 @@ public class GameTest extends AppCompatActivity {
             states.add(new Grid(this)); // adding the initial state
         }
 
+        public void updateState() {
+            if ((game_started) && (!reseting)) {
+                states.add(new Grid(this)); //used to add another state of the grid to the list
+            }
+        }
+
+        public void addBlocToGrid(Bloc b){
+            for (int i = b.row; i < b.row + b.row_span; i++) {
+                for (int j = b.col; j < b.col + b.column_span; j++) {
+                    grid[i][j] = 1;
+                    //Log.d("grid",grid.toString());
+                }
+            }
+        }
+
+        public void removeBlockFromGrid(Bloc b){
+            for (int i = b.row; i < b.row + b.row_span; i++) {
+                for (int j = b.col; j < b.col + b.column_span; j++) {
+                    grid[i][j] = 0;
+                }
+            }
+        }
+
+
         public void addBloc(Bloc b) {
             blocs.add(b);
             for (int i = b.row; i < b.row + b.row_span; i++) {
                 for (int j = b.col; j < b.col + b.column_span; j++) {
                     grid[i][j] = 1;
                     //Log.d("grid",grid.toString());
-                    if ((game_started) && (!reseting)){
-                        states.add(new Grid(this)); //used to add another state of the grid to the list
-                    }
                 }
             }
         }
@@ -229,10 +250,10 @@ public class GameTest extends AppCompatActivity {
             int nb_bloc = b_list.size()-1;
             for(int k=0; k< nb_bloc; k++){
                 Log.d("LOGGING_blocs",Integer.toString(k));
-                this.removeBloc(this.blocs.get(0)); // If you use k on a list that dynamically change size you will break everything
+                this.removeBlockFromGrid(this.blocs.get(0)); // If you use k on a list that dynamically change size you will break everything
             }
             for(int k=0; k< nb_bloc; k++){
-                this.addBloc(b_list.get(k)); // Look, we add it to the colection AND to the grid, this might work
+                this.addBlocToGrid(b_list.get(k)); // Look, we add it to the colection AND to the grid, this might work
             }
             this.reseting = false;
         }
@@ -250,10 +271,41 @@ public class GameTest extends AppCompatActivity {
             return aString;
         }
 
+        public void mooveUp(Bloc b){
+            this.removeBlockFromGrid(b);
+            b.decRow(); // Normalement par la magie de spointeurs d'ID la liste update automatiquement la position de l'object actuel. En priant pour que ce soit bien le même
+            // Au pire il faut reconstruire la liste à chaque fois ( c'est usant)
+            this.addBlocToGrid(b);
+        }
+
+        public void mooveDown(Bloc b){
+            this.removeBlockFromGrid(b);
+            b.incRow(); // Normalement par la magie de spointeurs d'ID la liste update automatiquement la position de l'object actuel. En priant pour que ce soit bien le même
+            // Au pire il faut reconstruire la liste à chaque fois ( c'est usant)
+            this.addBlocToGrid(b);
+        }
+
+        public void mooveLeft(Bloc b){
+            this.removeBlockFromGrid(b);
+            b.decCol(); // Normalement par la magie de spointeurs d'ID la liste update automatiquement la position de l'object actuel. En priant pour que ce soit bien le même
+            // Au pire il faut reconstruire la liste à chaque fois ( c'est usant)
+            this.addBlocToGrid(b);
+        }
+
+        public void mooveRight(Bloc b){
+            this.removeBlockFromGrid(b);
+            b.incCol(); // Normalement par la magie de spointeurs d'ID la liste update automatiquement la position de l'object actuel. En priant pour que ce soit bien le même
+            // Au pire il faut reconstruire la liste à chaque fois ( c'est usant)
+            this.addBlocToGrid(b);
+        }
+
+
     }
     /*This function loads the initial state of a Game using what is stored in the Grid */
     protected void loadInitialState(Grid grid){
         //remember to like, empty the grid.states an truly reinitialize
+
+        //ICI FAUT CLEAN LA GRID YA UN SOUCI DE COLLISION
 
         //getting the desired state
         Grid initialState = grid.states.get(0);
@@ -263,8 +315,9 @@ public class GameTest extends AppCompatActivity {
         int nb_bloc = grid.blocs.size();
         for(int k=0 ;k< nb_bloc; k++){
             //I mean, might as well load the entire initial state right ?
-            Log.d("LOGGING_blocs",Integer.toString(k));
+
             Bloc b = grid.blocs.get(k);
+            Log.d("LOGGING_blocs" + b.name,Integer.toString(k));
             Log.d("Ancien_bloc",b.toString());
             Bloc init_b = initialState.blocs.get(k);
             Log.d("init_bloc",init_b.toString());
@@ -280,8 +333,7 @@ public class GameTest extends AppCompatActivity {
         for(int k=0 ;k< nb_bloc; k++){
             //I mean, might as well load the entire initial state right ?
             Bloc b = grid.blocs.get(k);
-            View v = b.view;
-            GridLayout.LayoutParams layoutParams = (GridLayout.LayoutParams) v.getLayoutParams();
+            GridLayout.LayoutParams layoutParams = (GridLayout.LayoutParams) b.view.getLayoutParams();
             //okay now modify the view thingy with the actual parameters of your bloc
             layoutParams.columnSpec = GridLayout.spec(b.col,b.column_span);
             layoutParams.rowSpec =  GridLayout.spec(b.row,b.row_span);
@@ -356,7 +408,7 @@ public class GameTest extends AppCompatActivity {
                         case MotionEvent.ACTION_DOWN:
                             xDown = event.getX(); // need to update this when you moove to correct jittering effect
                             yDown = event.getY();
-                            Log.d("DOWN","Car1 was touched");
+                            Log.d("DOWN", x.name + " was touched");
                             Log.d("grid",game.toString());
                             break;
 
@@ -379,48 +431,50 @@ public class GameTest extends AppCompatActivity {
                             Log.d("column",layoutParams.columnSpec.toString());
                             if (dpDeltaX > 100) {
                                 if ((game.canMoveRight(x)) && (x.isHorizontal)){
-                                    game.removeBloc(x); //SEIGNEUR, lorsque tu add et que tu remove le bloc, tu CHANGE sa posiution dans la grille
+                                    game.mooveRight(x);
+                                    /*game.removeBloc(x); //SEIGNEUR, lorsque tu add et que tu remove le bloc, tu CHANGE sa posiution dans la grille
                                     x.incCol(); // d'ou l'importance d'avoir une fonction move bloc
-                                    game.addBloc(x); //Et si on découplais ? on fait une fonction add et remove qui va juste pas affecter la liste initial quoi.
+                                    game.addBloc(x); //Et si on découplais ? on fait une fonction add et remove qui va juste pas affecter la liste initial quoi.*/
                                     wasmoved = true;
                                 }
                             }
                             if (dpDeltaX < -100) {
                                 if ((game.canMoveLeft(x)) && (x.isHorizontal)){
-                                    game.removeBloc(x);
+                                    game.mooveLeft(x);
+                                    /*game.removeBloc(x);
                                     x.decCol();
-                                    game.addBloc(x);
+                                    game.addBloc(x);*/
                                     wasmoved = true;
                                 }
                             }
                             if (dpDeltaY < -100) {
                                 Log.d("UP","mooving up");
                                 if ((game.canMoveUp(x)) && (!x.isHorizontal)){
-                                    game.removeBloc(x);
+                                    game.mooveUp(x);
+                                    /*game.removeBloc(x);
                                     x.decRow();
-                                    game.addBloc(x);
+                                    game.addBloc(x);*/
                                     Log.d("UP","nice you moved Up");
-                                        wasmoved = true;
+                                    wasmoved = true;
                                 }
                             //car1_bloc.decRow();
-                            wasmoved = true;
                             }
                             if (dpDeltaY > 100) {
                                 Log.d("down","mooving down");
                                 if ((game.canMoveDown(x)) && (!x.isHorizontal)){
-                                    game.removeBloc(x);
+                                    game.mooveDown(x);
+                                    /*game.removeBloc(x);
                                     x.incRow();
-                                    game.addBloc(x);
+                                    game.addBloc(x);*/
                                     wasmoved = true;
                                     Log.d("down","nice you moved down");
                                 }
                             //car1_bloc.incRow();
-                            wasmoved = true;
                         }
                             layoutParams.columnSpec = GridLayout.spec(x.col,x.column_span);
                             layoutParams.rowSpec =  GridLayout.spec(x.row,x.row_span);
                             Log.d("Result",x.toString());
-                            if (wasmoved = true){
+                            if (wasmoved == true){
                                 x.view.setLayoutParams(layoutParams);
                                 Log.d("grid",game.toString());
                                 wasmoved = false;
@@ -430,7 +484,7 @@ public class GameTest extends AppCompatActivity {
 
                         case MotionEvent.ACTION_UP:
                             //Update le state uniquement quand on lache la pièce ! Faut le faire ici
-
+                            game.updateState();
                             if (game.checkWin(x)){
                                 //Do a pop up notification or something
                             }
