@@ -18,6 +18,7 @@ public class GridDisplay extends GridLayout {
             for (int j = 0; j < grid.getSize(); j++) {
                 Block block = grid.getBlocks()[i][j];
                 if (block != null) {
+                    Log.d("CODE_2_GridDisplay", Integer.toString(i) + Integer.toString(j));
                     if (block.getRow() == i && block.getCol() == j) {
                         this.addView(block.getBlockView());
 

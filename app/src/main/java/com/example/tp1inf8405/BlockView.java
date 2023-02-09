@@ -38,29 +38,29 @@ class BlockView extends View implements View.OnTouchListener{
                 dY =  (view.getY() - event.getRawY());
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (convertXToRow(dX) < 1 && convertXToRow(dX) < 1) {
+                if (convertYXToRowCol(dX) < 1 && convertYXToRowCol(dX) < 1) {
+                    x = event.getRawX() + dX;
+                    y = event.getRawY() + dY;
+                    dX_new = (view.getX() - event.getRawX());
+                    dY_new = (view.getY() - event.getRawY());
+                    colMove = convertYXToRowCol(dX_new - dX);
+                    rowMove = convertYXToRowCol(dY_new - dY);
+                    Log.d("CODE_0_BlockView", Float.toString(rowMove) + " : " + Integer.toString(convertYXToRowCol(colMove)));
                     if (isHorizontal()) {
-                        x = event.getRawX() + dX;
-                        y = event.getRawY() + dY;
-                        dX_new = (view.getX() - event.getRawX());
-                        dY_new = (view.getY() - event.getRawY());
-                        Log.d("CODE_0_BlockView", Float.toString(x - view.getX()) + " : " + Integer.toString(convertXToRow(x - view.getX())));
-                        rowMove = convertXToRow(dX_new - dX);
-
-                        if (rowMove > 1) {
+                        if (colMove > 1 && canMoveRight(this.getBlock())) {
                             this.moveRight();
-                            view.setX(x);
-                        } else if (rowMove < -1) {
+                            view.setX(convertRowColToYX(this.getRow()));
+                        } else if (colMove < -1 && canMoveLeft(this.getBlock())) {
                             this.moveLeft();
                             view.setX(x);
                         }
                     } else {
-                        if (colMove > 1) {
-                            this.moveUp();
-                            view.setX(y);
-                        } else if (colMove < -1) {
+                        if (rowMove > 1 && canMoveDown(this.getBlock())) {
                             this.moveDown();
-                            view.setX(y);
+                            view.setY(y);
+                        } else if (rowMove < -1 && canMoveUp(this.getBlock())) {
+                            this.moveUp();
+                            view.setY(y);
                         }
                     }
                     break;
@@ -71,70 +71,76 @@ class BlockView extends View implements View.OnTouchListener{
         return true;
     }
 
-    public float convertRowToX(int row){
-        return row * getWidth() / 6;
+    public Grid getGrid(){
+        return this.getBlock().getGrid();
     }
 
-    public int convertXToRow(float X){
-        return (int) (X * 6) / getWidth();
+    public boolean canMoveUp(Block block){
+        return this.getGrid().canMoveUp(block);
+    }
+    public boolean canMoveDown(Block block){
+        return this.getGrid().canMoveDown(block);
+    }
+    public boolean canMoveLeft(Block block){
+        return this.getGrid().canMoveLeft(block);
+    }
+    public boolean canMoveRight(Block block){
+        return this.getGrid().canMoveRight(block);
     }
 
-    public float convertColToY(int col){
-        return col * getWidth() / 6;
+    public float convertRowColToYX(int rowcol){
+        return rowcol * getWidth() / 6;
     }
-
-    public int convertYToCol(float Y){
-        return (int) (Y * 6) / getWidth();
+    public int convertYXToRowCol(float YX){
+        return (int) (YX * 6) / getWidth();
     }
 
     public void setRow(int row){
-        this.block.setRow(row);
+        this.getBlock().setRow(row);
     }
-
     public int getRow() {
-        return this.block.getRow();
+        return this.getBlock().getRow();
     }
-
     public void setCol(int col){
-        this.block.setCol(col);
+        this.getBlock().setCol(col);
+    }
+    public int getCol() {
+        return this.getBlock().getCol();
     }
 
-    public int getCol() {
-        return this.block.getCol();
+    public Block getBlock(){
+        return this.getBlock();
     }
 
     public void moveUp() {
-        block.moveUp();
+        getBlock().moveUp();
     }
-
     public void moveDown() {
-        block.moveDown();
+        getBlock().moveDown();
     }
-
     public void moveLeft() {
-        block.moveLeft();
+        getBlock().moveLeft();
     }
-
     public void moveRight() {
-        block.moveRight();
+        getBlock().moveRight();
     }
 
     public Block.Orientation getOrientation(){
-        return this.block.getOrientation();
+        return this.getBlock().getOrientation();
     }
 
     public boolean isHorizontal(){
-        return block.isHorizontal();
+        return this.getBlock().isHorizontal();
     }
 
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
 
         if (this.isHorizontal()) {
-                canvas.drawRect(new Rect((int) convertRowToX(this.getRow()), (int) convertColToY(this.getCol()), (int) convertRowToX(this.getRow() + 2), (int) convertColToY(this.getCol() + 1)), paint);
+                canvas.drawRect(new Rect((int) convertRowColToYX(this.getRow()), (int) convertRowColToYX(this.getCol()), (int) convertRowColToYX(this.getRow() + 2), (int) convertRowColToYX(this.getCol() + 1)), paint);
                 Log.d("CODE_1_BlockView", "Horizontal");
             } else {
-                canvas.drawRect(new Rect((int) convertRowToX(this.getRow()), (int) convertColToY(this.getCol()), (int) convertRowToX(this.getRow() + 1), (int) convertColToY(this.getCol() + 2)), paint);
+                canvas.drawRect(new Rect((int) convertRowColToYX(this.getRow()), (int) convertRowColToYX(this.getCol()), (int) convertRowColToYX(this.getRow() + 1), (int) convertRowColToYX(this.getCol() + 2)), paint);
                 Log.d("CODE_1_BlockView", "Vertical");
         }
     }

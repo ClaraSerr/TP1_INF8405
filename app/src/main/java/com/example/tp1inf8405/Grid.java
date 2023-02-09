@@ -45,24 +45,10 @@ class Grid {
                 blocks[row][col] = block;
                 blocks[row + 1][col] = block;
             }
+            block.setGrid(this);
             return true;
         }
         return false;
-    }
-
-    private boolean canMoveLeftRight(Block block){
-        return block.isHorizontal();
-    }
-
-    private boolean canMoveUpDown(Block block){
-        return !block.isHorizontal();
-    }
-
-    public void moveBlock(Block block){
-        //À compléter : mouvement du bloc.
-
-        checkWin(block);
-
     }
 
     private boolean isValid(Block block) {
@@ -75,4 +61,46 @@ class Grid {
             return row >= 0 && row < size - 1 && col >= 0 && col < size && blocks[row][col] == null && blocks[row + 1][col] == null;
         }
     }
+
+    public boolean canMoveUp(Block block){
+        int row = block.getRow();
+        int col = block.getCol();
+
+        if (block.isHorizontal()) {
+            return false;
+        } else {
+            return row > 0 && blocks[row-1][col] == null;
+        }
+    }
+    public boolean canMoveDown(Block block){
+        int row = block.getRow();
+        int col = block.getCol();
+
+        if (block.isHorizontal()) {
+            return false;
+        } else {
+            return row < size - 2 && blocks[row-2][col] == null;
+        }
+    }
+    public boolean canMoveLeft(Block block){
+        int row = block.getRow();
+        int col = block.getCol();
+
+        if (block.isHorizontal()) {
+            return col > 0 && blocks[row][col-1] == null;
+        } else {
+            return false;
+        }
+    }
+    public boolean canMoveRight(Block block){
+        int row = block.getRow();
+        int col = block.getCol();
+
+        if (block.isHorizontal()) {
+            return col < size - 2 && blocks[row][col+2] == null;
+        } else {
+            return false;
+        }
+    }
+
 }

@@ -7,9 +7,18 @@ class Block {
     private int row;
     private int col;
     private BlockView blockView;
+    private Grid grid;
 
     public BlockView getBlockView() {
         return blockView;
+    }
+
+    public Grid getGrid(){
+        return this.grid;
+    }
+
+    public void setGrid (Grid grid){
+        this.grid = grid;
     }
 
     public void setBlockView(BlockView blockView) {
@@ -56,19 +65,20 @@ class Block {
     }
 
     public void moveUp() {
-        row--;
+        this.row--;
     }
 
     public void moveDown() {
-        col++;
+        this.col++;
     }
 
     public void moveLeft() {
-        row--;
+        this.row--;
     }
 
     public void moveRight() {
-        col++;
+        this.col++;
     }
+
 
 }
