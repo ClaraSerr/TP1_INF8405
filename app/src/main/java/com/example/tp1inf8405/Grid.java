@@ -50,15 +50,36 @@ public class Grid {
         states.add(new Grid(this)); // adding the initial state
     }
 
+    public void updateState() {
+        if ((game_started) && (!reseting)) {
+            states.add(new Grid(this)); //used to add another state of the grid to the list
+        }
+    }
+
+    public void addBlocToGrid(Bloc b){
+        for (int i = b.row; i < b.row + b.row_span; i++) {
+            for (int j = b.col; j < b.col + b.column_span; j++) {
+                grid[i][j] = 1;
+                //Log.d("grid",grid.toString());
+            }
+        }
+    }
+
+    public void removeBlockFromGrid(Bloc b){
+        for (int i = b.row; i < b.row + b.row_span; i++) {
+            for (int j = b.col; j < b.col + b.column_span; j++) {
+                grid[i][j] = 0;
+            }
+        }
+    }
+
+
     public void addBloc(Bloc b) {
         blocs.add(b);
         for (int i = b.row; i < b.row + b.row_span; i++) {
             for (int j = b.col; j < b.col + b.column_span; j++) {
                 grid[i][j] = 1;
                 //Log.d("grid",grid.toString());
-                if ((game_started) && (!reseting)){
-                    states.add(new Grid(this)); //used to add another state of the grid to the list
-                }
             }
         }
     }
@@ -130,10 +151,10 @@ public class Grid {
         int nb_bloc = b_list.size()-1;
         for(int k=0; k< nb_bloc; k++){
             Log.d("LOGGING_blocs",Integer.toString(k));
-            this.removeBloc(this.blocs.get(0)); // If you use k on a list that dynamically change size you will break everything
+            this.removeBlockFromGrid(this.blocs.get(0)); // If you use k on a list that dynamically change size you will break everything
         }
         for(int k=0; k< nb_bloc; k++){
-            this.addBloc(b_list.get(k)); // Look, we add it to the colection AND to the grid, this might work
+            this.addBlocToGrid(b_list.get(k)); // Look, we add it to the colection AND to the grid, this might work
         }
         this.reseting = false;
     }
@@ -150,5 +171,34 @@ public class Grid {
         }
         return aString;
     }
+
+    public void mooveUp(Bloc b){
+        this.removeBlockFromGrid(b);
+        b.decRow(); // Normalement par la magie de spointeurs d'ID la liste update automatiquement la position de l'object actuel. En priant pour que ce soit bien le même
+        // Au pire il faut reconstruire la liste à chaque fois ( c'est usant)
+        this.addBlocToGrid(b);
+    }
+
+    public void mooveDown(Bloc b){
+        this.removeBlockFromGrid(b);
+        b.incRow(); // Normalement par la magie de spointeurs d'ID la liste update automatiquement la position de l'object actuel. En priant pour que ce soit bien le même
+        // Au pire il faut reconstruire la liste à chaque fois ( c'est usant)
+        this.addBlocToGrid(b);
+    }
+
+    public void mooveLeft(Bloc b){
+        this.removeBlockFromGrid(b);
+        b.decCol(); // Normalement par la magie de spointeurs d'ID la liste update automatiquement la position de l'object actuel. En priant pour que ce soit bien le même
+        // Au pire il faut reconstruire la liste à chaque fois ( c'est usant)
+        this.addBlocToGrid(b);
+    }
+
+    public void mooveRight(Bloc b){
+        this.removeBlockFromGrid(b);
+        b.incCol(); // Normalement par la magie de spointeurs d'ID la liste update automatiquement la position de l'object actuel. En priant pour que ce soit bien le même
+        // Au pire il faut reconstruire la liste à chaque fois ( c'est usant)
+        this.addBlocToGrid(b);
+    }
+
 
 }

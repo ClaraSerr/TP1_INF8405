@@ -84,5 +84,4 @@ public class Bloc{
             this.row = this.row -1;}
     }
 
-
 }
