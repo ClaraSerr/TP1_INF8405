@@ -15,41 +15,15 @@ public class GridDisplay extends GridLayout {
         setRowCount(grid.getSize());
 
         for (int i = 0; i < grid.getSize(); i++) {
-            for (int j = 0; j < grid.getSize(); j++){
+            for (int j = 0; j < grid.getSize(); j++) {
                 Block block = grid.getBlocks()[i][j];
                 if (block != null) {
-                    if (block.getX() == i && block.getY() == j){
-                        Log.d("BlockViewI",Integer.toString(i));
-                        Log.d("BlockViewJ",Integer.toString(j));
-                        BlockView blockView = new BlockView(context);
-                        blockView.setBlock(block);
-                        this.addView(blockView);
+                    if (block.getRow() == i && block.getCol() == j) {
+                        this.addView(block.getBlockView());
+
+                        Log.d("CODE_1_GridDisplay", Integer.toString(i) + Integer.toString(j));
                     }
                 }
-            }
-        }
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        for (int i = 0; i < getChildCount(); i++) {
-            Log.d("GridDisplayLooping",Integer.toString(i));
-
-            BlockView child = (BlockView) getChildAt(i);
-            Block block = child.getBlock();
-
-            int x = block.getX();
-            Log.d("BlockViewX", Integer.toString(x));
-            int y = block.getY();
-            Log.d("BlockViewY", Integer.toString(y));
-
-            if (block.isHorizontal()) {
-                canvas.drawRect(new Rect(x * getWidth() / 6, y * getWidth() / 6, (x + 2) * getWidth() / 6, (y + 1) * getWidth() / 6), child.getPaint());
-                Log.d("BlockViewOrientation", "Horizontal");
-            } else {
-                canvas.drawRect(new Rect(x * getWidth() / 6, y * getWidth() / 6, (x + 1) * getWidth() / 6, (y + 2) * getWidth() / 6), child.getPaint());
-                Log.d("BlockViewOrientation", "Vertical");
             }
         }
     }

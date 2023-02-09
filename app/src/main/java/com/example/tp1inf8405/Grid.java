@@ -34,8 +34,8 @@ class Grid {
     }
 
     public boolean addBlock(Block block){
-        int row = block.getX();
-        int col = block.getY();
+        int row = block.getCol();
+        int col = block.getRow();
 
         if (isValid(block)) {
             if (block.isHorizontal()) {
@@ -66,8 +66,8 @@ class Grid {
     }
 
     private boolean isValid(Block block) {
-        int row = block.getX();
-        int col = block.getY();
+        int row = block.getRow();
+        int col = block.getCol();
 
         if (block.isHorizontal()) {
             return row >= 0 && row < size && col >= 0 && col < size - 1 && blocks[row][col] == null && blocks[row][col + 1] == null;

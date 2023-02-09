@@ -8,8 +8,8 @@ import android.widget.LinearLayout;
 public class RedBlock extends Block {
     private boolean isWin;
 
-    public RedBlock(int x, int y, Orientation orientation, boolean isWin) {
-        super(x,y,orientation);
+    public RedBlock(int x, int y, Orientation orientation, boolean isWin, Context context) {
+        super(x,y,orientation, context);
         this.isWin = isWin;
     }
 
@@ -17,7 +17,13 @@ public class RedBlock extends Block {
         return isWin;
     }
 
-    public void setIsWin(boolean isWin) {
+    private void setIsWin(boolean isWin) {
         this.isWin = isWin;
+    }
+
+    public void checkWin(){
+        if(super.getCol() == 4){
+            setIsWin(true);
+        }
     }
 }

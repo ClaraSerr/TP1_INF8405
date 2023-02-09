@@ -1,25 +1,42 @@
 package com.example.tp1inf8405;
 
+import android.content.Context;
+import android.util.Log;
+
 class Block {
-    private int x;
-    private int y;
+    private int row;
+    private int col;
+    private BlockView blockView;
+
+    public BlockView getBlockView() {
+        return blockView;
+    }
+
+    public void setBlockView(BlockView blockView) {
+        this.blockView = blockView;
+    }
+
     enum Orientation {
         HORIZONTAL, VERTICAL
     }
     private Orientation orientation;
 
-    public Block(int x, int y, Orientation orientation) {
-        this.x = x;
-        this.y = y;
+    public Block(int row, int col, Orientation orientation, Context context) {
+        this.row = row;
+        this.col = col;
         this.orientation = orientation;
+        this.blockView = new BlockView(this,context);
+        blockView.setBlockColor(this);
+        Log.d("CODE_1_Block", "Constructor");
+
     }
 
-    public int getX() {
-        return x;
+    public int getRow() {
+        return row;
     }
 
-    public int getY() {
-        return y;
+    public int getCol() {
+        return col;
     }
 
     public Orientation getOrientation() {
@@ -30,27 +47,28 @@ class Block {
         return orientation == Orientation.HORIZONTAL;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setRow(int row) {
+        this.row = row;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setCol(int col) {
+        this.col = col;
     }
 
     public void moveUp() {
-        y--;
+        row--;
     }
 
     public void moveDown() {
-        y++;
+        col++;
     }
 
     public void moveLeft() {
-        x--;
+        row--;
     }
 
     public void moveRight() {
-        x++;
+        col++;
     }
+
 }

@@ -1,6 +1,7 @@
 package com.example.tp1inf8405;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,16 +24,18 @@ public class GridLoader {
                     int row = Integer.parseInt(tokens[0]);
                     int col = Integer.parseInt(tokens[1]);
                     Block.Orientation orientation = tokens[2].equals("HORIZONTAL") ? Block.Orientation.HORIZONTAL : Block.Orientation.VERTICAL;
-                    Block block = new RedBlock(row, col, orientation, false);
+                    Block block = new RedBlock(row, col, orientation, false, context);
                     grid.addBlock(block);
+                    Log.d("CODE_1_GridLoader", Integer.toString(row) + Integer.toString(col) + "RED");
                     isFirstLine = false;
                 } else {
                     String[] tokens = line.split(" ");
                     int row = Integer.parseInt(tokens[0]);
                     int col = Integer.parseInt(tokens[1]);
                     Block.Orientation orientation = tokens[2].equals("HORIZONTAL") ? Block.Orientation.HORIZONTAL : Block.Orientation.VERTICAL;
-                    Block block = new Block(row, col, orientation);
+                    Block block = new Block(row, col, orientation, context);
                     grid.addBlock(block);
+                    Log.d("CODE_1_GridLoader", Integer.toString(row) + Integer.toString(col) + "BLUE");
                 }
             }
         } catch (IOException e) {
