@@ -20,6 +20,7 @@ import java.util.ListIterator;
 
 public class GameTest extends AppCompatActivity {
     float xDown = 0, yDown = 0;
+    int total_moves =0;
 
     /*This function loads the initial state of a Game using what is stored in the Grid */
     protected void loadInitialState(Grid grid){
@@ -69,6 +70,8 @@ public class GameTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_test);
         ImageView bloc = findViewById(R.id.bloc);
+
+
 
         View target = findViewById(R.id.target);
         Bloc target_bloc = new Bloc(2,1,1,2, target, "target",true);
@@ -204,6 +207,10 @@ public class GameTest extends AppCompatActivity {
 
                         case MotionEvent.ACTION_UP:
                             //Update le state uniquement quand on lache la pièce ! Faut le faire ici
+
+                            //Rajouter une condition pour l'affichage, genre if la nouvelle position du bloc diffère de l'original
+                            total_moves += 1;
+
                             game.updateState();
                             if (game.checkWin(x)){
                                 //Do a pop up notification or something

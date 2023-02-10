@@ -73,6 +73,13 @@ public class Grid {
         }
     }
 
+    public void clear_grid(){
+        for (int i = 0; i< width;i++){
+            for(int j = 0; j< height;j++){
+                grid[i][j] = 0;
+            }
+        }
+    }
 
     public void addBloc(Bloc b) {
         blocs.add(b);
@@ -148,13 +155,15 @@ public class Grid {
     public void reload(ArrayList<Bloc> b_list){
         //now we must replace our bloc list with this one and carefully remove and readd every bloc...
         this.reseting = true;
-        int nb_bloc = b_list.size()-1;
+        int nb_bloc = b_list.size();
+        clear_grid();
+        /*(int k=0; k< nb_bloc; k++){
+            this.removeBlockFromGrid(this.blocs.get(0)); // If you use k on a list that dynamically change size you will break everything
+        }*/
+        blocs.clear();
         for(int k=0; k< nb_bloc; k++){
             Log.d("LOGGING_blocs",Integer.toString(k));
-            this.removeBlockFromGrid(this.blocs.get(0)); // If you use k on a list that dynamically change size you will break everything
-        }
-        for(int k=0; k< nb_bloc; k++){
-            this.addBlocToGrid(b_list.get(k)); // Look, we add it to the colection AND to the grid, this might work
+            this.addBloc(b_list.get(k)); // Look, we add it to the colection AND to the grid, this might work
         }
         this.reseting = false;
     }
