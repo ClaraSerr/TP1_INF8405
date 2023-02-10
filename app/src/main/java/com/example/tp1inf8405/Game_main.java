@@ -1,145 +1,268 @@
 package com.example.tp1inf8405;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class Game_main extends AppCompatActivity {
 
+    float xDown = 0, yDown = 0;
+    public int total_moves=0;
+
+    /*This function loads the initial state of a Game using what is stored in the Grid */
+    protected void update_moves(){
+        TextView textView = findViewById(R.id.moves_number);
+        String attributeValue = String.valueOf(total_moves); // retrieve the value of the attribute
+        textView.setText(attributeValue);
+    }
+    protected void loadInitialState(Grid grid){
+        //remember to like, empty the grid.states an truly reinitialize
+
+        //ICI FAUT CLEAN LA GRID YA UN SOUCI DE COLLISION
+
+        //getting the desired state
+        Grid initialState = grid.states.get(0);
+        ArrayList<Bloc> new_blocs = new ArrayList<>() ; // we will add this to the final grid and then litterally redraw everything as it is added
+        //actually putting blocs back in there place we will use the fact that they are in the same order
+        Log.d("Initial state",initialState.toString());
+        int nb_bloc = grid.blocs.size();
+        for(int k=0 ;k< nb_bloc; k++){
+            //I mean, might as well load the entire initial state right ?
+
+            Bloc b = grid.blocs.get(k);
+            Log.d("LOGGING_blocs" + b.name,Integer.toString(k));
+            Log.d("Ancien_bloc",b.toString());
+            Bloc init_b = initialState.blocs.get(k);
+            Log.d("init_bloc",init_b.toString());
+            b.col =  init_b.col;
+            b.row = init_b.row;
+            new_blocs.add(b);
+            Log.d("Nouveau_blocs",b.toString());
+        }
+        //Here you call the function we will create. Its grid.reload.
+        grid.reload(new_blocs);
+        //Now that the virtual grid is reloaded, you need to update the ACTUAL view, goodluck with that my G
+        //Maybe begin by browsing the blocs within ? They should be linked to the same views soits just a matter of updating the views within the blocs... I think
+        for(int k=0 ;k< nb_bloc; k++){
+            //I mean, might as well load the entire initial state right ?
+            Bloc b = grid.blocs.get(k);
+            GridLayout.LayoutParams layoutParams = (GridLayout.LayoutParams) b.view.getLayoutParams();
+            //okay now modify the view thingy with the actual parameters of your bloc
+            layoutParams.columnSpec = GridLayout.spec(b.col,b.column_span);
+            layoutParams.rowSpec =  GridLayout.spec(b.row,b.row_span);
+            b.view.setLayoutParams(layoutParams);
+            //AYO THIS MIGHT DO IT
+        }
+
+
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_main);
-        //setContentView(new UnblockMeView(this));
-/*
-        GridLayout gridLayout = new GridLayout(this);
-        gridLayout.setRowCount(4);
-        gridLayout.setColumnCount(4);
+        //ImageView bloc = findViewById(R.id.bloc);
 
-        for (int i = 0; i < 16; i++) {
-            Button button = new Button(this);
-            button.setText("Block " + i);
-            gridLayout.addView(button);
+        View target = findViewById(R.id.target);
+        Bloc target_bloc = new Bloc(2,1,1,2, target, "target",true);
+
+        View car1 = findViewById(R.id.car1);
+        Bloc car1_bloc = new Bloc(0,1,1,3, car1, "car1",false);
+
+        View car2 = findViewById(R.id.car2);
+        Bloc car2_bloc = new Bloc(1,3,3,1, car2,"car2",false);
+
+        View car3 = findViewById(R.id.car3);
+        Bloc car3_bloc = new Bloc(3,1,2,1, car3,"car3",false);
+
+        View car4 = findViewById(R.id.car4);
+        Bloc car4_bloc = new Bloc(5,1,1,3, car4,"car4",false);
+
+        View car5 = findViewById(R.id.car5);
+        Bloc car5_bloc = new Bloc(4,5,2,1, car5,"car5",false);
+
+        View car6 = findViewById(R.id.car6);
+        Bloc car6_bloc = new Bloc(3,5,1,2, car6,"car6",false);
+
+        View car7 = findViewById(R.id.car7);
+        Bloc car7_bloc = new Bloc(0,6,3,1,car7,"car7",false);
+
+        Grid game = new Grid(7,7);
+        game.addBloc(target_bloc);
+        game.addBloc(car1_bloc);
+        game.addBloc(car2_bloc);
+        game.addBloc(car3_bloc);
+        game.addBloc(car4_bloc);
+        game.addBloc(car5_bloc);
+        game.addBloc(car6_bloc);
+        game.addBloc(car7_bloc);
+        game.game_ready();
+        Log.d("grid",game.toString());
+        Log.d("car1",car1_bloc.toString());
+        Log.d("car7",car7_bloc.toString());
+        ArrayList<Bloc> aList = game.blocs;
+
+        Button res_button = (Button) findViewById(R.id.restart);
+        res_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("RESET_START","you are trying to reset");
+                loadInitialState(game);
+                Log.d("RESET_END","you reseted I hope");
+                // Do something in response to button click
+            }
+        });
 
 
+        for (Bloc x : aList) {
+            x.view.setOnTouchListener(new View.OnTouchListener() {
 
 
-        }
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
 
-        setContentView(gridLayout);
+                    switch (event.getActionMasked()) {
+                        case MotionEvent.ACTION_DOWN:
+                            xDown = event.getX(); // need to update this when you moove to correct jittering effect
+                            yDown = event.getY();
+                            Log.d("DOWN", x.name + " was touched");
+                            Log.d("grid",game.toString());
+                            break;
 
-  */
-    }
-    public void restart(View view){
-        setContentView(new UnblockMeView(this));
-    }
-    public class UnblockMeView extends View {
-        private int blockSize;
-        private int gridSize;
-        private Paint blockPaint;
-        private boolean[][][][] blocks;
+                        case MotionEvent.ACTION_MOVE:
+                            float movedX, movedY;
+                            boolean wasmoved = false;
+                            movedX = event.getX();
+                            movedY = event.getY();
+                            // calculate how much the user moviedhis finger
+                            float distanceX = movedX - xDown;
+                            float distanceY = movedY - yDown;
 
-        public UnblockMeView(Context context) {
-            super(context);
-            blockSize = 175;
-            gridSize = 6;
-            blockPaint = new Paint();
-            blockPaint.setColor(Color.BLUE);
-            //block[left][top][horizontal][vertical]
-            blocks = new boolean[gridSize][gridSize][gridSize][gridSize];
-            blocks[0][1][2][1] = true; //mandatory block
-            blocks[2][2][1][2] = true;
-            blocks[3][4][1][2] = true;
-
-        }
-
-        @Override
-        protected void onDraw(Canvas canvas) {
-            for (int i = 0; i < gridSize; i++) {
-                for (int j = 0; j < gridSize; j++) {
-                    for (int k = 0; k < gridSize; k++) {
-                        for (int m = 0; m < gridSize; m++) {
-
-                            if (blocks[i][j][k][m]) {
-
-                                canvas.drawRect(i * blockSize, j * blockSize, (i+k) * blockSize, (j+m) * blockSize, blockPaint);
+                            //now updated position
+                            Resources resources = v.getContext().getResources();
+                            float dpDeltaX = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, distanceX, resources.getDisplayMetrics());
+                            float dpDeltaY = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, distanceY, resources.getDisplayMetrics());
+                            GridLayout.LayoutParams layoutParams = (GridLayout.LayoutParams) v.getLayoutParams();
+                            Log.d("MOVE","CAR1 was moved");
+                            Log.d("PARAM",v.getLayoutParams().toString());
+                            Log.d("column",layoutParams.columnSpec.toString());
+                            if (dpDeltaX > 100) {
+                                if ((game.canMoveRight(x)) && (x.isHorizontal)){
+                                    game.mooveRight(x);
+                                    /*game.removeBloc(x); //SEIGNEUR, lorsque tu add et que tu remove le bloc, tu CHANGE sa posiution dans la grille
+                                    x.incCol(); // d'ou l'importance d'avoir une fonction move bloc
+                                    game.addBloc(x); //Et si on découplais ? on fait une fonction add et remove qui va juste pas affecter la liste initial quoi.*/
+                                    wasmoved = true;
+                                }
                             }
-                        }
+                            if (dpDeltaX < -100) {
+                                if ((game.canMoveLeft(x)) && (x.isHorizontal)){
+                                    game.mooveLeft(x);
+                                    /*game.removeBloc(x);
+                                    x.decCol();
+                                    game.addBloc(x);*/
+                                    wasmoved = true;
+                                }
+                            }
+                            if (dpDeltaY < -100) {
+                                Log.d("UP","mooving up");
+                                if ((game.canMoveUp(x)) && (!x.isHorizontal)){
+                                    game.mooveUp(x);
+                                    /*game.removeBloc(x);
+                                    x.decRow();
+                                    game.addBloc(x);*/
+                                    Log.d("UP","nice you moved Up");
+                                    wasmoved = true;
+                                }
+                                //car1_bloc.decRow();
+                            }
+                            if (dpDeltaY > 100) {
+                                Log.d("down","mooving down");
+                                if ((game.canMoveDown(x)) && (!x.isHorizontal)){
+                                    game.mooveDown(x);
+                                    /*game.removeBloc(x);
+                                    x.incRow();
+                                    game.addBloc(x);*/
+                                    wasmoved = true;
+                                    Log.d("down","nice you moved down");
+                                }
+                                //car1_bloc.incRow();
+                            }
+                            layoutParams.columnSpec = GridLayout.spec(x.col,x.column_span);
+                            layoutParams.rowSpec =  GridLayout.spec(x.row,x.row_span);
+                            Log.d("Result",x.toString());
+                            if (wasmoved == true){
+                                x.view.setLayoutParams(layoutParams);
+                                Log.d("grid",game.toString());
+                                total_moves += 1;  //add a movement
+
+                                wasmoved = false;
+                            }
+                            //car1_bloc.view.setLayoutParams(layoutParams);
+                            break;
+
+                        case MotionEvent.ACTION_UP:
+                            //Update le state uniquement quand on lache la pièce ! Faut le faire ici
+                            game.updateState();
+                            update_moves();
+                            if (game.checkWin(x)){
+                                //Do a pop up notification or something
+                            }
+                            break;
+
                     }
+
+                    return true;
                 }
-            }
-
-
-                Paint linePaint = new Paint();
-                linePaint.setColor(Color.BLACK);
-                linePaint.setStrokeWidth(2);
-                canvas.drawLine(0, 0, gridSize * blockSize, 0, linePaint);
-                canvas.drawLine(0, 0, 0, gridSize * blockSize, linePaint);
-                canvas.drawLine(0, gridSize * blockSize, gridSize * blockSize, gridSize * blockSize, linePaint);
-                canvas.drawLine(gridSize * blockSize, 0, gridSize * blockSize, gridSize * blockSize, linePaint);
-
-
-        }
-      /*  public void moveBlock(int fromX, int fromY, int toX, int toY) {
-            blocks[toX][toY] = blocks[fromX][fromY];
-            blocks[fromX][fromY] = false;
-            invalidate();
-        } */
-    }
-
-
-   /* class Block {
-        int size;
-        int x, y;
-        int color;
-
-        public Block(int size, int x, int y, int color) {
-            this.size = size;
-            this.x = x;
-            this.y = y;
-            this.color = color;
-        }
-    }
-
-    class UnblockMeView extends View {
-        Block[][] blocks;
-        Paint paint;
-
-        public UnblockMeView(Context context) {
-            super(context);
-            blocks = new Block[5][5];
-            paint = new Paint();
+            });
         }
 
-        @Override
-        protected void onDraw(Canvas canvas) {
-            super.onDraw(canvas);
-            for (int i = 0; i < blocks.length; i++) {
-                for (int j = 0; j < blocks[i].length; j++) {
-                    Block block = blocks[i][j];
-                    if (block != null) {
-                        paint.setColor(block.color);
-                        canvas.drawRect(block.x, block.y, block.x + block.size, block.y + block.size, paint);
-                    }
+       /* bloc.setOnTouchListener(new View.OnTouchListener(){
+
+
+            public boolean onTouch(View v, MotionEvent event){
+
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        xDown = event.getX();
+                        yDown = event.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        float movedX, movedY;
+                        movedX = event.getX();
+                        movedY = event.getY();
+                        // calculate how much the user moviedhis finger
+                        float distanceX = movedX - xDown;
+                        float distanceY = movedY - yDown;
+
+                        //now updated position
+                        bloc.setX(bloc.getX()+distanceX);
+                        bloc.setY(bloc.getY()+distanceY);
+
+
+                        break;
                 }
+                return true;
             }
-        }
+        });*/
 
-        public void moveBlock(int fromX, int fromY, int toX, int toY) {
-            Block block = blocks[fromX][fromY];
-            blocks[fromX][fromY] = null;
-            blocks[toX][toY] = block;
-            invalidate();
-        }
-    }
-*/
 
     }
+}
