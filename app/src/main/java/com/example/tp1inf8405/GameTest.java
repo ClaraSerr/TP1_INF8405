@@ -22,7 +22,9 @@ public class GameTest extends AppCompatActivity {
     float xDown = 0, yDown = 0;
     int total_moves =0;
 
-    /*This function loads the initial state of a Game using what is stored in the Grid */
+    /**This function loads the initial state of a Game using what is stored in the
+     * Grid. Can be modified to load any state theorically
+     * */
     protected void loadInitialState(Grid grid){
         //remember to like, empty the grid.states an truly reinitialize
 
