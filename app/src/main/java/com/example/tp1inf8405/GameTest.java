@@ -25,7 +25,6 @@ public class GameTest extends AppCompatActivity {
     float xDown = 0, yDown = 0;
     int total_moves =0;
 
-
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
@@ -63,8 +62,6 @@ public class GameTest extends AppCompatActivity {
             }
         });
         anim.start();
-
-
     }
 
     /*This function loads the initial state of a Game using what is stored in the Grid */

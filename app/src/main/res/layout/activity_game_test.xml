@@ -98,13 +98,14 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/nb_moves"
+                    android:id="@+id/moves"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Moves"
                     android:textAlignment="center" />
 
                 <TextView
+                    android:id="@+id/nb_moves"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
