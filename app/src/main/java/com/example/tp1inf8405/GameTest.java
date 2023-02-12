@@ -36,6 +36,10 @@ public class GameTest extends AppCompatActivity {
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
+    public void update_mooves(){
+        TextView v = findViewById(R.id.nb_moves);
+        v.setText(Integer.toString(total_moves));
+    }
     public void createNewVictoryDialog(){
         dialogBuilder = new AlertDialog.Builder(this);
         final View victoryPopupView = getLayoutInflater().inflate(R.layout.activity_pop_up_victory, null);
@@ -114,7 +118,7 @@ public class GameTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_test);
         //ImageView bloc = findViewById(R.id.bloc);
-
+        update_mooves();
 
 
         View target = findViewById(R.id.target);
@@ -251,13 +255,27 @@ public class GameTest extends AppCompatActivity {
 
                         case MotionEvent.ACTION_UP:
                             //Update le state uniquement quand on lache la pièce ! Faut le faire ici
-
+                            Log.d("Original col", Integer.toString(x.original_col));
+                            Log.d("Current col", Integer.toString(x.col));
+                            Log.d("Original row", Integer.toString(x.original_row));
+                            Log.d("Current row", Integer.toString(x.row));
                             //Rajouter une condition pour l'affichage, genre if la nouvelle position du bloc diffère de l'original
-                            total_moves += 1;
+                            if ((x.original_col != x.col) || (x.original_row != x.row)){
+                                // on update le nombre de moove et on met à jour les position original des blocs
+                                total_moves += 1;
+                                x.update_original_pos();
+
+                            }
+                            update_mooves();
+                            Log.d("MOOVES",Integer.toString(total_moves));
 
                             game.updateState();
                             if (game.checkWin(x)){
                                 createNewVictoryDialog();
+                                total_moves = 0;
+                                update_mooves();
+                                loadInitialState(game);
+
                             }
                             break;
 

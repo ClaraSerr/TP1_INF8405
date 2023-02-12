@@ -9,13 +9,15 @@ import androidx.annotation.NonNull;
  * */
 public class Bloc{
     String name;
-    int row;
-    int col;
+    int row; //currrent
+    int col; //currrent
     int row_span;
     int column_span;
     View view;
     boolean isHorizontal; //0 if vertical, 1 if horizontal
 
+    int original_row;
+    int original_col;
     boolean isTarget;
     Bloc (int row, int col, int row_span, int col_span, View v, String name, boolean isTarget){
         this.row = row;
@@ -31,6 +33,8 @@ public class Bloc{
         else{
             this.isHorizontal = true;
         }
+        this.original_row = row;
+        this.original_col = col;
     }
     /**
      * This constructor is used uniquely for making deep copies
@@ -49,6 +53,8 @@ public class Bloc{
         else{
             this.isHorizontal = true;
         }
+        this.original_row = bloc.original_row;
+        this.original_col = bloc.original_col;
     }
 
     @NonNull
@@ -98,5 +104,11 @@ public class Bloc{
         if ((this.row - 1) > -1 ){
             this.row = this.row -1;}
     }
-
+    /** Function used to update the original position of the bloc once the bloc has been
+     *  sucessfully mooved
+     * */
+    public void update_original_pos(){
+        this.original_col = this.col;
+        this.original_row = this.row;
+    }
 }
