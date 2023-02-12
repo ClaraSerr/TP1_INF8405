@@ -33,7 +33,12 @@ public class GameTest extends AppCompatActivity {
         TextView v = findViewById(R.id.nb_moves);
         v.setText(Integer.toString(total_moves));
     }
-    public void createNewVictoryDialog(Grid game){
+    public void reset_mooves() {
+        total_moves = 0;
+        TextView v = findViewById(R.id.nb_moves);
+        v.setText(Integer.toString(total_moves));
+    }
+        public void createNewVictoryDialog(Grid game){
         dialogBuilder = new AlertDialog.Builder(this);
         final View victoryPopupView = getLayoutInflater().inflate(R.layout.activity_pop_up_victory, null);
         dialogBuilder.setView(victoryPopupView);
@@ -70,7 +75,7 @@ public class GameTest extends AppCompatActivity {
     /*This function loads the initial state of a Game using what is stored in the Grid */
     public void loadInitialState(Grid grid){
         //remember to like, empty the grid.states an truly reinitialize
-
+        reset_mooves();
         //ICI FAUT CLEAN LA GRID YA UN SOUCI DE COLLISION
 
         //getting the desired state
@@ -104,6 +109,7 @@ public class GameTest extends AppCompatActivity {
             layoutParams.columnSpec = GridLayout.spec(b.col,b.column_span);
             layoutParams.rowSpec =  GridLayout.spec(b.row,b.row_span);
             b.view.setLayoutParams(layoutParams);
+            b.update_original_pos();
             //AYO THIS MIGHT DO IT
         }
 
@@ -178,6 +184,7 @@ public class GameTest extends AppCompatActivity {
                             yDown = event.getY();
                             Log.d("DOWN", x.name + " was touched");
                             Log.d("grid",game.toString());
+                            Log.d("BLOC", x.toString());
                             break;
 
                         case MotionEvent.ACTION_MOVE:

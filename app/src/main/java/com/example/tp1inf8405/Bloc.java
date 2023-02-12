@@ -53,8 +53,8 @@ public class Bloc{
         else{
             this.isHorizontal = true;
         }
-        this.original_row = bloc.original_row;
-        this.original_col = bloc.original_col;
+        this.original_row = bloc.row;
+        this.original_col = bloc.col;
     }
 
     @NonNull
@@ -66,6 +66,8 @@ public class Bloc{
         res += "col = " + Integer.toString(col) + " \n ";
         res += "column_span = " + Integer.toString(column_span) + " \n ";
         res += "horizontal = " + Boolean.toString(isHorizontal) + " \n";
+        res += "original_col = " + Integer.toString(original_col) + " \n ";
+        res += "original_row = " + Integer.toString(original_row) + " \n ";
         return res;
         //return super.toString();
     }
