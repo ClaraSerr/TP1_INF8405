@@ -33,7 +33,7 @@ public class GameTest extends AppCompatActivity {
         TextView v = findViewById(R.id.nb_moves);
         v.setText(Integer.toString(total_moves));
     }
-    public void createNewVictoryDialog(){
+    public void createNewVictoryDialog(Grid game){
         dialogBuilder = new AlertDialog.Builder(this);
         final View victoryPopupView = getLayoutInflater().inflate(R.layout.activity_pop_up_victory, null);
         dialogBuilder.setView(victoryPopupView);
@@ -58,9 +58,13 @@ public class GameTest extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 dialog.dismiss();
+                update_mooves();
+                loadInitialState(game);
             }
         });
         anim.start();
+
+
     }
 
     /*This function loads the initial state of a Game using what is stored in the Grid */
@@ -264,10 +268,8 @@ public class GameTest extends AppCompatActivity {
 
                             game.updateState();
                             if (game.checkWin(x)){
-                                createNewVictoryDialog();
+                                createNewVictoryDialog(game);
                                 total_moves = 0;
-                                update_mooves();
-                                loadInitialState(game);
 
                             }
                             break;
