@@ -258,7 +258,6 @@ public class GameTest extends AppCompatActivity {
                             layoutParams.rowSpec =  GridLayout.spec(x.row,x.row_span);
                             Log.d("Result",x.toString());
                             if (wasmoved == true){
-                                setResetButtonState(true);
                                 x.view.setLayoutParams(layoutParams);
                                 Log.d("grid",game.toString());
                                 wasmoved = false;
@@ -276,6 +275,7 @@ public class GameTest extends AppCompatActivity {
                             if ((x.original_col != x.col) || (x.original_row != x.row)){
                                 // on update le nombre de moove et on met à jour les position original des blocs
                                 total_moves += 1;
+                                setResetButtonState(true);
                                 x.update_original_pos();
 
                             }
