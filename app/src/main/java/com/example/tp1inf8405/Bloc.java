@@ -3,7 +3,10 @@ package com.example.tp1inf8405;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-
+/**
+ * This bloc class makes the views inside the grid layout behave like actual blocs. Incrementing and decrementing the column and rows.
+ *
+ * */
 public class Bloc{
     String name;
     int row;
@@ -29,7 +32,9 @@ public class Bloc{
             this.isHorizontal = true;
         }
     }
-    //Constructeur pour la deepcopy
+    /**
+     * This constructor is used uniquely for making deep copies
+     * */
     Bloc(Bloc bloc){
         this.row = bloc.row;
         this.col = bloc.col;
@@ -58,7 +63,9 @@ public class Bloc{
         return res;
         //return super.toString();
     }
-
+    /**
+     * Function that increments the column
+     * */
     public void incCol(){
         int test =  0;
         if (this.column_span>1) {
@@ -66,19 +73,27 @@ public class Bloc{
         }else{
             test = this.col + 1;
         }
-        if (test < 8 ){
+        if (test < 8 ){ //this is a cheat because that's Grid class job
             this.col = this.col +1;
         }
     }
+    /**
+     * Function that decrements the column
+     * */
     public void decCol(){
         if (((this.col - 1) > 0)){
             this.col = this.col -1;
         }
     }
-
+    /**
+     * Function that increments the line
+     * */
     public void incRow(){
         this.row = this.row +1;
     }
+    /**
+     * Function that decrements the line
+     * */
     public void decRow(){
         if ((this.row - 1) > -1 ){
             this.row = this.row -1;}
