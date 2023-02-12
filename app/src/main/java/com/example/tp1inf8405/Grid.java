@@ -1,6 +1,8 @@
 package com.example.tp1inf8405;
 
+import android.app.AlertDialog;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -11,6 +13,8 @@ public class Grid {
     int width;
     int height;
     int[][] grid;
+
+
 
     boolean game_started = false;
     boolean reseting = false ;

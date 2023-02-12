@@ -3,12 +3,21 @@ package com.example.tp1inf8405;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.app.AlertDialog;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -22,8 +31,39 @@ public class GameTest extends AppCompatActivity {
     float xDown = 0, yDown = 0;
     int total_moves =0;
 
+
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+
+    public void createNewVictoryDialog(){
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View victoryPopupView = getLayoutInflater().inflate(R.layout.activity_pop_up_victory, null);
+        dialogBuilder.setView(victoryPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+        final Window window = dialog.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+
+        ValueAnimator anim = ValueAnimator.ofFloat(1f, 0f);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float fraction = valueAnimator.getAnimatedFraction();
+                window.setDimAmount(1 - fraction);
+            }
+        });
+        anim.setDuration(3000);
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                dialog.dismiss();
+            }
+        });
+        anim.start();
+    }
+
     /*This function loads the initial state of a Game using what is stored in the Grid */
-    protected void loadInitialState(Grid grid){
+    public void loadInitialState(Grid grid){
         //remember to like, empty the grid.states an truly reinitialize
 
         //ICI FAUT CLEAN LA GRID YA UN SOUCI DE COLLISION
@@ -69,7 +109,7 @@ public class GameTest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_test);
-        ImageView bloc = findViewById(R.id.bloc);
+        //ImageView bloc = findViewById(R.id.bloc);
 
 
 
@@ -213,7 +253,7 @@ public class GameTest extends AppCompatActivity {
 
                             game.updateState();
                             if (game.checkWin(x)){
-                                //Do a pop up notification or something
+                                createNewVictoryDialog();
                             }
                             break;
 
@@ -224,7 +264,7 @@ public class GameTest extends AppCompatActivity {
             });
         }
 
-        bloc.setOnTouchListener(new View.OnTouchListener(){
+        /*bloc.setOnTouchListener(new View.OnTouchListener(){
 
 
             public boolean onTouch(View v, MotionEvent event){
@@ -243,15 +283,15 @@ public class GameTest extends AppCompatActivity {
                         float distanceY = movedY - yDown;
 
                         //now updated position
-                        bloc.setX(bloc.getX()+distanceX);
-                        bloc.setY(bloc.getY()+distanceY);
+                        //bloc.setX(bloc.getX()+distanceX);
+                        //bloc.setY(bloc.getY()+distanceY);
 
 
                         break;
                 }
                 return true;
             }
-        });
+        });*/
 
 
     }
