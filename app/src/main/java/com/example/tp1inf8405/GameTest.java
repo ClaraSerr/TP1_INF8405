@@ -25,7 +25,6 @@ public class GameTest extends AppCompatActivity {
     float xDown = 0, yDown = 0;
     int total_moves =0;
 
-
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
@@ -63,13 +62,15 @@ public class GameTest extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 dialog.dismiss();
-                update_mooves();
                 loadInitialState(game);
             }
         });
         anim.start();
+    }
 
-
+    public void setResetButtonState(boolean bool){
+        Button reset = (Button) findViewById(R.id.reset);
+        reset.setEnabled(bool);
     }
 
     /*This function loads the initial state of a Game using what is stored in the Grid */
@@ -80,6 +81,12 @@ public class GameTest extends AppCompatActivity {
 
         //getting the desired state
         Grid initialState = grid.states.get(0);
+
+        //réinitialiser le boutton reset et le score
+        setResetButtonState(false);
+        total_moves = 0;
+        update_mooves();
+
         ArrayList<Bloc> new_blocs = new ArrayList<>() ; // we will add this to the final grid and then litterally redraw everything as it is added
         //actually putting blocs back in there place we will use the fact that they are in the same order
         Log.d("Initial state",initialState.toString());
@@ -122,6 +129,7 @@ public class GameTest extends AppCompatActivity {
         setContentView(R.layout.activity_game_test);
         //ImageView bloc = findViewById(R.id.bloc);
         update_mooves();
+        setResetButtonState(false);
 
 
         View target = findViewById(R.id.target);
@@ -250,6 +258,7 @@ public class GameTest extends AppCompatActivity {
                             layoutParams.rowSpec =  GridLayout.spec(x.row,x.row_span);
                             Log.d("Result",x.toString());
                             if (wasmoved == true){
+                                setResetButtonState(true);
                                 x.view.setLayoutParams(layoutParams);
                                 Log.d("grid",game.toString());
                                 wasmoved = false;
@@ -276,8 +285,6 @@ public class GameTest extends AppCompatActivity {
                             game.updateState();
                             if (game.checkWin(x)){
                                 createNewVictoryDialog(game);
-                                total_moves = 0;
-
                             }
                             break;
 
