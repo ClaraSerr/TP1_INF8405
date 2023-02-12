@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -41,6 +42,9 @@ public class GameTest extends AppCompatActivity {
         dialogBuilder.setView(victoryPopupView);
         dialog = dialogBuilder.create();
         dialog.show();
+
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.victory);
+        mediaPlayer.start();
         final Window window = dialog.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
