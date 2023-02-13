@@ -98,6 +98,11 @@ public class GameTest extends AppCompatActivity {
         reset.setEnabled(bool);
     }
 
+    public void setCancelButtonState(boolean bool){
+        Button reset = (Button) findViewById(R.id.cancel_move);
+        reset.setEnabled(bool);
+    }
+
     /*This function loads the initial state of a Game using what is stored in the Grid */
     public void loadInitialState(Grid grid){
         //remember to like, empty the grid.states an truly reinitialize
@@ -109,6 +114,7 @@ public class GameTest extends AppCompatActivity {
 
         //réinitialiser le boutton reset et le score
         setResetButtonState(false);
+        setCancelButtonState(false);
         total_moves = 0;
         update_mooves();
 
@@ -161,6 +167,7 @@ public class GameTest extends AppCompatActivity {
             update_mooves();
             if (total_moves==0){
                 setResetButtonState(false);
+                setCancelButtonState(false);
             }
             //ICI FAUT CLEAN LA GRID YA UN SOUCI DE COLLISION
 
@@ -213,6 +220,7 @@ public class GameTest extends AppCompatActivity {
 
         update_mooves();
         setResetButtonState(false);
+        setCancelButtonState(false);
 
         updateHighScore("1");
 
@@ -371,6 +379,7 @@ public class GameTest extends AppCompatActivity {
                                 // on update le nombre de moove et on met à jour les position original des blocs
                                 total_moves += 1;
                                 setResetButtonState(true);
+                                setCancelButtonState(true);
                                 x.update_original_pos();
                                 game.updateState();
 
