@@ -6,6 +6,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -20,10 +22,27 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameTest extends AppCompatActivity {
+    SharedPreferences sharedpreferences;
+    public static final String MyPREFERENCES = "Highscores";
+
     float xDown = 0, yDown = 0;
     int total_moves =0;
+
+    public Map<String, Integer> MaxHighscores = new HashMap<String, Integer>() {{
+        put("1", 15);
+        put("2", 17);
+        put("3", 15);
+    }};
+
+    public void updateHighScore(String puzzleNumber) {
+        TextView v = findViewById(R.id.record3);
+        String score = sharedpreferences.getString (puzzleNumber, "--");
+        v.setText(score + "/" +  MaxHighscores.get(puzzleNumber));
+    };
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -87,6 +106,10 @@ public class GameTest extends AppCompatActivity {
         total_moves = 0;
         update_mooves();
 
+        //On met à jour le higher score avec ce qui est stocké dans les préférences
+        // 1 est hardcoded parce qu'on a pas encore codé les autres puzzles
+        updateHighScore("1");
+
         ArrayList<Bloc> new_blocs = new ArrayList<>() ; // we will add this to the final grid and then litterally redraw everything as it is added
         //actually putting blocs back in there place we will use the fact that they are in the same order
         Log.d("Initial state",initialState.toString());
@@ -128,9 +151,13 @@ public class GameTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_test);
         //ImageView bloc = findViewById(R.id.bloc);
+        //setting preferences
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
         update_mooves();
         setResetButtonState(false);
 
+        updateHighScore("1");
 
         View target = findViewById(R.id.target);
         Bloc target_bloc = new Bloc(2,1,1,2, target, "target",true);
@@ -285,6 +312,14 @@ public class GameTest extends AppCompatActivity {
                             game.updateState();
                             if (game.checkWin(x)){
                                 createNewVictoryDialog(game);
+                                // TODO replace "1" by the String puzzleNumber
+                                String HighestScoreSoFar = sharedpreferences.getString ("1", "--");
+                                if ((HighestScoreSoFar == "--") || (Integer.parseInt(HighestScoreSoFar) > total_moves)){
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.putString("1", Integer.toString(total_moves));
+                                    editor.commit();
+                                }
+
                             }
                             break;
 
