@@ -142,9 +142,60 @@ public class GameTest extends AppCompatActivity {
             b.update_original_pos();
             //AYO THIS MIGHT DO IT
         }
+    }
+
+    public void loadPreviousState(Grid grid){
+        int size = grid.states.size();
+        if (size < 2) {
+            //Je sais que le bouton doit être grisé si on a pas bougé donc bon peut être que c'est ici je me dis ?
+        }
+        else{
+            //remember to like, empty the grid.states an truly reinitialize
+            total_moves -= 1;
+            update_mooves();
+            if (total_moves==0){
+                setResetButtonState(false);
+            }
+            //ICI FAUT CLEAN LA GRID YA UN SOUCI DE COLLISION
+
+            //getting the desired state
+
+            Grid initialState = grid.states.get(size-2); //on va à l'état -1 puis on supprimer l'état actuel de la liste des states
 
 
+            ArrayList<Bloc> new_blocs = new ArrayList<>() ; // we will add this to the final grid and then litterally redraw everything as it is added
+            //actually putting blocs back in there place we will use the fact that they are in the same order
+            Log.d("Initial state",initialState.toString());
+            int nb_bloc = grid.blocs.size();
+            for(int k=0 ;k< nb_bloc; k++){
+                //I mean, might as well load the entire initial state right ?
 
+                Bloc b = grid.blocs.get(k);
+                Log.d("LOGGING_blocs" + b.name,Integer.toString(k));
+                Log.d("Ancien_bloc",b.toString());
+                Bloc init_b = initialState.blocs.get(k);
+                Log.d("init_bloc",init_b.toString());
+                b.col =  init_b.col;
+                b.row = init_b.row;
+                new_blocs.add(b);
+                Log.d("Nouveau_blocs",b.toString());
+            }
+            //Here you call the function we will create. Its grid.reload.
+            grid.loadPrevious(new_blocs);
+            //Now that the virtual grid is reloaded, you need to update the ACTUAL view, goodluck with that my G
+            //Maybe begin by browsing the blocs within ? They should be linked to the same views soits just a matter of updating the views within the blocs... I think
+            for(int k=0 ;k< nb_bloc; k++){
+                //I mean, might as well load the entire initial state right ?
+                Bloc b = grid.blocs.get(k);
+                GridLayout.LayoutParams layoutParams = (GridLayout.LayoutParams) b.view.getLayoutParams();
+                //okay now modify the view thingy with the actual parameters of your bloc
+                layoutParams.columnSpec = GridLayout.spec(b.col,b.column_span);
+                layoutParams.rowSpec =  GridLayout.spec(b.row,b.row_span);
+                b.view.setLayoutParams(layoutParams);
+                b.update_original_pos();
+                //AYO THIS MIGHT DO IT
+            }
+        }
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,6 +255,17 @@ public class GameTest extends AppCompatActivity {
                 Log.d("RESET_START","you are trying to reset");
                 loadInitialState(game);
                 Log.d("RESET_END","you reseted I hope");
+                // Do something in response to button click
+            }
+        });
+
+        Button cancel_button = (Button) findViewById(R.id.cancel_move);
+
+        cancel_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("CANCEL_START","you are trying to cancel");
+                loadPreviousState(game);
+                Log.d("CANCEL_END","you canceled I hope");
                 // Do something in response to button click
             }
         });
@@ -304,12 +366,11 @@ public class GameTest extends AppCompatActivity {
                                 total_moves += 1;
                                 setResetButtonState(true);
                                 x.update_original_pos();
+                                game.updateState();
 
                             }
                             update_mooves();
                             Log.d("MOOVES",Integer.toString(total_moves));
-
-                            game.updateState();
                             if (game.checkWin(x)){
                                 createNewVictoryDialog(game);
                                 // TODO replace "1" by the String puzzleNumber

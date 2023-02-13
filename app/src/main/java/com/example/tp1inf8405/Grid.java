@@ -197,6 +197,28 @@ public class Grid {
             this.addBloc(b_list.get(k)); // Look, we add it to the colection AND to the grid, this might work
         }
         this.reseting = false;
+        // When reloading very important to destroy all previous states
+        this.states.clear();
+        this.updateState();// okay this should do i, it feels right
+
+    }
+    public void loadPrevious(ArrayList<Bloc> b_list){
+        //now we must replace our bloc list with this one and carefully remove and readd every bloc...
+        this.reseting = true;
+        int nb_bloc = b_list.size();
+        clear_grid();
+        /*(int k=0; k< nb_bloc; k++){
+            this.removeBlockFromGrid(this.blocs.get(0)); // If you use k on a list that dynamically change size you will break everything
+        }*/
+        blocs.clear();
+        for(int k=0; k< nb_bloc; k++){
+            Log.d("LOGGING_blocs",Integer.toString(k));
+            this.addBloc(b_list.get(k)); // Look, we add it to the colection AND to the grid, this might work
+        }
+        this.reseting = false;
+        // When reloading very important to destroy all previous states
+        this.states.remove(this.states.size()-1);
+
     }
 
     @NonNull
