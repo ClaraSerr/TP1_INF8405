@@ -160,7 +160,6 @@
             android:layout_column="0"
             android:layout_columnSpan="1"
             android:background="#E1F1E576"
-            android:text="CAR1"
             android:visibility="invisible"
             tools:visibility="invisible" />
 
@@ -172,8 +171,7 @@
             android:layout_rowSpan="1"
             android:layout_column="0"
             android:layout_columnSpan="1"
-            android:background="#E1F1E576"
-            android:text="CAR1"
+            android:background="#00F1E576"
             android:visibility="invisible"
             tools:visibility="invisible" />
 
@@ -186,7 +184,6 @@
             android:layout_column="0"
             android:layout_columnSpan="1"
             android:background="#E1F1E576"
-            android:text="CAR1"
             android:visibility="invisible"
             tools:visibility="invisible" />
 
@@ -199,7 +196,6 @@
             android:layout_column="0"
             android:layout_columnSpan="1"
             android:background="#E1F1E576"
-            android:text="CAR1"
             android:visibility="invisible"
             tools:visibility="invisible" />
 
@@ -212,7 +208,6 @@
             android:layout_column="0"
             android:layout_columnSpan="1"
             android:background="#E1F1E576"
-            android:text="CAR1"
             android:visibility="invisible"
             tools:visibility="invisible" />
 
@@ -225,7 +220,6 @@
             android:layout_column="0"
             android:layout_columnSpan="1"
             android:background="#E1F1E576"
-            android:text="CAR1"
             android:visibility="invisible"
             tools:visibility="invisible" />
 
@@ -238,7 +232,6 @@
             android:layout_column="0"
             android:layout_columnSpan="1"
             android:background="#3CC394"
-            android:text="CAR1"
             android:visibility="invisible"
             tools:visibility="invisible" />
 
@@ -251,7 +244,6 @@
             android:layout_column="1"
             android:layout_columnSpan="1"
             android:background="#3CC394"
-            android:text="CAR1"
             android:visibility="invisible"
             tools:visibility="invisible" />
 
@@ -264,7 +256,6 @@
             android:layout_column="2"
             android:layout_columnSpan="1"
             android:background="#3CC394"
-            android:text="CAR1"
             android:visibility="invisible"
             tools:visibility="invisible" />
 
@@ -277,7 +268,6 @@
             android:layout_column="3"
             android:layout_columnSpan="1"
             android:background="#3CC394"
-            android:text="CAR1"
             android:visibility="invisible"
             tools:visibility="invisible" />
 
@@ -290,7 +280,6 @@
             android:layout_column="4"
             android:layout_columnSpan="1"
             android:background="#3CC394"
-            android:text="CAR1"
             android:visibility="invisible"
             tools:visibility="invisible" />
 
@@ -303,7 +292,6 @@
             android:layout_column="5"
             android:layout_columnSpan="1"
             android:background="#3CC394"
-            android:text="CAR1"
             android:visibility="invisible"
             tools:visibility="invisible" />
 
@@ -316,7 +304,6 @@
             android:layout_column="6"
             android:layout_columnSpan="1"
             android:background="#3CC394"
-            android:text="CAR1"
             android:visibility="invisible"
             tools:visibility="invisible" />
 
@@ -328,8 +315,8 @@
             android:layout_rowSpan="1"
             android:layout_column="1"
             android:layout_columnSpan="2"
-            android:background="#0CE643"
-            android:text="target" />
+            android:radius="10dp"
+            android:background="#F50057" />
 
         <TextView
             android:id="@+id/car1"
@@ -339,8 +326,7 @@
             android:layout_rowSpan="0"
             android:layout_column="1"
             android:layout_columnSpan="3"
-            android:background="@drawable/block_background"
-            android:text="CAR1" />
+            android:background="@drawable/block_background" />
 
         <TextView
             android:id="@+id/car2"
@@ -349,8 +335,7 @@
             android:layout_row="1"
             android:layout_rowSpan="3"
             android:layout_column="3"
-            android:background="@drawable/block_background"
-            android:text="car2" />
+            android:background="@drawable/block_background" />
 
         <TextView
             android:id="@+id/car3"
@@ -359,8 +344,7 @@
             android:layout_row="3"
             android:layout_rowSpan="2"
             android:layout_column="1"
-            android:background="@drawable/block_background"
-            android:text="car3" />
+            android:background="@drawable/block_background" />
 
         <TextView
             android:id="@+id/car4"
@@ -370,8 +354,7 @@
             android:layout_rowSpan="1"
             android:layout_column="1"
             android:layout_columnSpan="3"
-            android:background="@drawable/block_background"
-            android:text="car4" />
+            android:background="@drawable/block_background" />
 
         <TextView
             android:id="@+id/car5"
@@ -381,8 +364,7 @@
             android:layout_rowSpan="2"
             android:layout_column="5"
             android:layout_columnSpan="1"
-            android:background="@drawable/block_background"
-            android:text="car5" />
+            android:background="@drawable/block_background" />
 
         <TextView
             android:id="@+id/car6"
@@ -392,8 +374,7 @@
             android:layout_rowSpan="1"
             android:layout_column="5"
             android:layout_columnSpan="2"
-            android:background="@drawable/block_background"
-            android:text="car6" />
+            android:background="@drawable/block_background" />
 
         <TextView
             android:id="@+id/car7"
@@ -403,8 +384,7 @@
             android:layout_rowSpan="3"
             android:layout_column="6"
             android:layout_columnSpan="1"
-            android:background="@drawable/block_background"
-            android:text="car7" />
+            android:background="@drawable/block_background" />
 
     </GridLayout>
 
