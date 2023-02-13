@@ -7,6 +7,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
@@ -47,6 +48,11 @@ public class GameTest extends AppCompatActivity {
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
+    public void back_menu(View v){
+        //test from Studio 3
+        Intent i= new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
     public void update_mooves(){
         TextView v = findViewById(R.id.nb_moves);
         v.setText(Integer.toString(total_moves));
