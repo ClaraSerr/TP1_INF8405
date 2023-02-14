@@ -154,13 +154,14 @@
     </LinearLayout>
 
     <GridLayout
+        android:id="@+id/gridLayout"
         android:layout_width="350dp"
         android:layout_height="350dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
+        android:background="#3CC394"
         android:columnCount="7"
         android:rowCount="7"
-        android:background="#3CC394"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -204,7 +205,7 @@
             android:layout_rowSpan="1"
             android:layout_column="0"
             android:layout_columnSpan="1"
-            android:background="#FFB74D"/>
+            android:background="#FFB74D" />
 
         <TextView
             android:id="@+id/pat5"
@@ -234,7 +235,7 @@
             android:layout_rowSpan="1"
             android:layout_column="0"
             android:layout_columnSpan="1"
-            android:background="#FFB74D"/>
+            android:background="#FFB74D" />
 
         <TextView
             android:id="@+id/pat8"
@@ -419,4 +420,26 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/load1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="184dp"
+        android:onClick="loading_Puzzle1"
+        android:text="Button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/load2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="184dp"
+        android:onClick="loading_Puzzle2"
+        android:text="Button"
+        app:layout_constraintStart_toEndOf="@+id/load1"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

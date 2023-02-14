@@ -29,9 +29,46 @@ import java.util.Map;
 public class GameTest extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "Highscores";
-
+    int puzzle_number;
     float xDown = 0, yDown = 0;
     int total_moves =0;
+    View target;
+    Bloc target_bloc = new Bloc(2,1,1,2, target, "target",true);
+    Bloc target_bloc2 = new Bloc(2,1,1,2, target, "target",true);
+
+    View car1 ;
+    Bloc car1_bloc = new Bloc(0,1,1,3, car1, "car1",false);
+    Bloc car1_bloc2 = new Bloc(1,3,2,1, car1, "car1_puzzle2",false);
+
+
+    View car2 ;
+    Bloc car2_bloc = new Bloc(1,3,3,1, car2,"car2",false);
+    Bloc car2_bloc2 = new Bloc(1,4,3,1, car2, "car2_puzzle2",false);
+
+    View car3 ;
+    Bloc car3_bloc = new Bloc(3,1,2,1, car3,"car3",false);
+    Bloc car3_bloc2 = new Bloc(1,5,3,1, car3, "car3_puzzle2",false);
+
+    View car4 ;
+    Bloc car4_bloc = new Bloc(5,1,1,3, car4,"car4",false);
+    Bloc car4_bloc2 = new Bloc(3,1,1,2, car4, "car4_puzzle2",false);
+    View car5 ;
+    Bloc car5_bloc = new Bloc(4,5,2,1, car5,"car5",false);
+    Bloc car5_bloc2 = new Bloc(3,3,2,1, car5, "car5_puzzle2",false);
+
+    View car6 ;
+    Bloc car6_bloc = new Bloc(3,5,1,2, car6,"car6",false);
+    Bloc car6_bloc2 = new Bloc(4,2,2,1, car6, "car6_puzzle2",false);
+
+    View car7 ;
+    Bloc car7_bloc = new Bloc(0,6,3,1,car7,"car7",false);
+    Bloc car7_bloc2 = new Bloc(5,3,1,2, car7, "car7_puzzle2",false);
+
+    Grid game1 = new Grid(7,7);
+    Grid game2 = new Grid(7,7);
+    Grid game3 = new Grid(7,7);
+    Grid game = game1; // Normalement il suffit juste de changer vers quel grille game pointe. C'est pas une deep copy mais deux variables qui pointent aux même endroit pour l'instant
+
 
     public Map<String, Integer> MaxHighscores = new HashMap<String, Integer>() {{
         put("1", 15);
@@ -210,45 +247,33 @@ public class GameTest extends AppCompatActivity {
             }
         }
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_test);
-        //ImageView bloc = findViewById(R.id.bloc);
-        //setting preferences
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
-        update_mooves();
-        setResetButtonState(false);
-        setCancelButtonState(false);
+    public void display_Puzzle(int k){
+        switch(k) {
+            case 1:
+                game = game1;
+                loadInitialState(game2); //loading initial states is essential as it basically reset the state of the previous game
+                break;
 
-        updateHighScore("1");
+            case 2:
+                game = game2;
+                loadInitialState(game1);
+                break;
+        }
+        for (Bloc x : game.blocs){
+            x.update_view();
+        }
+    }
+    /** functions to be deleted, just for testing
+     * */
+    public void loading_Puzzle1(View v){
+        display_Puzzle(1);
+    }
+    public void loading_Puzzle2(View v){
+        display_Puzzle(2);
+    }
 
-        View target = findViewById(R.id.target);
-        Bloc target_bloc = new Bloc(2,1,1,2, target, "target",true);
-
-        View car1 = findViewById(R.id.car1);
-        Bloc car1_bloc = new Bloc(0,1,1,3, car1, "car1",false);
-
-        View car2 = findViewById(R.id.car2);
-        Bloc car2_bloc = new Bloc(1,3,3,1, car2,"car2",false);
-
-        View car3 = findViewById(R.id.car3);
-        Bloc car3_bloc = new Bloc(3,1,2,1, car3,"car3",false);
-
-        View car4 = findViewById(R.id.car4);
-        Bloc car4_bloc = new Bloc(5,1,1,3, car4,"car4",false);
-
-        View car5 = findViewById(R.id.car5);
-        Bloc car5_bloc = new Bloc(4,5,2,1, car5,"car5",false);
-
-        View car6 = findViewById(R.id.car6);
-        Bloc car6_bloc = new Bloc(3,5,1,2, car6,"car6",false);
-
-        View car7 = findViewById(R.id.car7);
-        Bloc car7_bloc = new Bloc(0,6,3,1,car7,"car7",false);
-
-        Grid game = new Grid(7,7);
+    public void load_Puzzle(){
         game.addBloc(target_bloc);
         game.addBloc(car1_bloc);
         game.addBloc(car2_bloc);
@@ -258,10 +283,70 @@ public class GameTest extends AppCompatActivity {
         game.addBloc(car6_bloc);
         game.addBloc(car7_bloc);
         game.game_ready();
+
+        game2.addBloc(target_bloc2);
+        game2.addBloc(car1_bloc2);
+        game2.addBloc(car2_bloc2);
+        game2.addBloc(car3_bloc2);
+        game2.addBloc(car4_bloc2);
+        game2.addBloc(car5_bloc2);
+        game2.addBloc(car6_bloc2);
+        game2.addBloc(car7_bloc2);
+        game2.game_ready();
+
+
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_game_test);
+        target = findViewById(R.id.target);
+        car1 = findViewById(R.id.car1);
+        car2 = findViewById(R.id.car2);
+        car3 = findViewById(R.id.car3);
+        car4 = findViewById(R.id.car4);
+        car5 = findViewById(R.id.car5);
+        car6 = findViewById(R.id.car6);
+        car7 = findViewById(R.id.car7);
+
+        target_bloc.set_view(target);
+        car1_bloc.set_view(car1);
+        car2_bloc.set_view(car2);
+        car3_bloc.set_view(car3);
+        car4_bloc.set_view(car4);
+        car5_bloc.set_view(car5);
+        car6_bloc.set_view(car6);
+        car7_bloc.set_view(car7);
+
+        target_bloc2.set_view(target);
+        car1_bloc2.set_view(car1);
+        car2_bloc2.set_view(car2);
+        car3_bloc2.set_view(car3);
+        car4_bloc2.set_view(car4);
+        car5_bloc2.set_view(car5);
+        car6_bloc2.set_view(car6);
+        car7_bloc2.set_view(car7);
+
+        //ImageView bloc = findViewById(R.id.bloc);
+        //setting preferences
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        load_Puzzle();
+        update_mooves();
+
+
+
+        setResetButtonState(false);
+        setCancelButtonState(false);
+
+        updateHighScore("1");
+
+
+
         Log.d("grid",game.toString());
         Log.d("car1",car1_bloc.toString());
         Log.d("car7",car7_bloc.toString());
-        ArrayList<Bloc> aList = game.blocs;
+        ArrayList<Bloc> allBlocs = (ArrayList<Bloc>) game1.blocs.clone(); // This will contain all the blocs available
+        allBlocs.addAll(game2.blocs);
 
         Button res_button = (Button) findViewById(R.id.reset);
         res_button.setOnClickListener(new View.OnClickListener() {
@@ -285,7 +370,7 @@ public class GameTest extends AppCompatActivity {
         });
 
 
-        for (Bloc x : aList) {
+        for (Bloc x : allBlocs) {
             x.view.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {

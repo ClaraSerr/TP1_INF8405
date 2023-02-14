@@ -1,6 +1,8 @@
 package com.example.tp1inf8405;
 
 import android.view.View;
+import android.widget.GridLayout;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 /**
@@ -15,6 +17,8 @@ public class Bloc{
     int column_span;
     View view;
     boolean isHorizontal; //0 if vertical, 1 if horizontal
+    int height =0;
+    int width = 0;
 
     int original_row;
     int original_col;
@@ -35,6 +39,8 @@ public class Bloc{
         }
         this.original_row = row;
         this.original_col = col;
+        this.width = 50*column_span;
+        this.height = 50*row_span;
     }
     /**
      * This constructor is used uniquely for making deep copies
@@ -55,6 +61,8 @@ public class Bloc{
         }
         this.original_row = bloc.row;
         this.original_col = bloc.col;
+        this.height = bloc.height;
+        this.width = bloc.width;
     }
 
     @NonNull
@@ -112,5 +120,20 @@ public class Bloc{
     public void update_original_pos(){
         this.original_col = this.col;
         this.original_row = this.row;
+    }
+    /** Function that update the view linked to the bloc, shoudl work well
+     * */
+    public void update_view(){
+        float factor = this.view.getContext().getResources().getDisplayMetrics().density;
+        GridLayout.LayoutParams layoutParams = (GridLayout.LayoutParams) this.view.getLayoutParams();
+        layoutParams.columnSpec = GridLayout.spec(this.col,this.column_span);
+        layoutParams.rowSpec =  GridLayout.spec(this.row,this.row_span);
+        layoutParams.height = (int) (this.height* factor);
+        layoutParams.width = (int) (this.width* factor);
+        this.view.setLayoutParams(layoutParams);
+    }
+
+    public void set_view(View v){
+        this.view = v;
     }
 }
