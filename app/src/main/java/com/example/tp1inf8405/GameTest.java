@@ -280,6 +280,9 @@ public class GameTest extends AppCompatActivity {
     }
 
     public void display_Puzzle(int k){
+        TextView number = findViewById(R.id.puzzle_number);
+        number.setText(k);
+
         switch(k) {
             case 1:
                 game = game1;
