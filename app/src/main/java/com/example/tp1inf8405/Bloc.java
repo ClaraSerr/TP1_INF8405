@@ -84,20 +84,22 @@ public class Bloc{
      * */
     public void incCol(){
         int test =  0;
-        if (this.column_span>1) {
+        if (isHorizontal){
+        if (this.column_span>1)  {
             test = this.col + 1 + this.column_span;
         }else{
             test = this.col + 1;
         }
-        if (test < 8 ){ //this is a cheat because that's Grid class job
+        if (test < 8 ) { //this is a cheat because that's Grid class job
             this.col = this.col +1;
+        }
         }
     }
     /**
      * Function that decrements the column
      * */
     public void decCol(){
-        if (((this.col - 1) > 0)){
+        if (((this.col - 1) > 0)&& (isHorizontal)){
             this.col = this.col -1;
         }
     }
@@ -105,13 +107,15 @@ public class Bloc{
      * Function that increments the line
      * */
     public void incRow(){
+        if (!isHorizontal){
         this.row = this.row +1;
+        }
     }
     /**
      * Function that decrements the line
      * */
     public void decRow(){
-        if ((this.row - 1) > -1 ){
+        if (((this.row - 1) > -1 ) && (!isHorizontal)){
             this.row = this.row -1;}
     }
     /** Function used to update the original position of the bloc once the bloc has been

@@ -29,7 +29,7 @@ import java.util.Map;
 public class GameTest extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "Highscores";
-    int puzzle_number;
+    int current_puzzle = 1;
     float xDown = 0, yDown = 0;
     int total_moves =0;
     View target;
@@ -262,8 +262,127 @@ public class GameTest extends AppCompatActivity {
         }
         for (Bloc x : game.blocs){
             x.update_view();
-        }
+            x.view.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getActionMasked()) {
+                        case MotionEvent.ACTION_DOWN:
+                            xDown = event.getX(); // need to update this when you moove to correct jittering effect
+                            yDown = event.getY();
+                            Log.d("DOWN", x.name + " was touched");
+                            Log.d("grid",game.toString());
+                            Log.d("BLOC", x.toString());
+                            break;
+
+                        case MotionEvent.ACTION_MOVE:
+                            float movedX, movedY;
+                            boolean wasmoved = false;
+                            movedX = event.getX();
+                            movedY = event.getY();
+                            // calculate how much the user moviedhis finger
+                            float distanceX = movedX - xDown;
+                            float distanceY = movedY - yDown;
+
+                            //now updated position
+                            Resources resources = v.getContext().getResources();
+                            float dpDeltaX = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, distanceX, resources.getDisplayMetrics());
+                            float dpDeltaY = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, distanceY, resources.getDisplayMetrics());
+                            GridLayout.LayoutParams layoutParams = (GridLayout.LayoutParams) v.getLayoutParams();
+                            Log.d("MOVE","CAR1 was moved");
+                            Log.d("PARAM",v.getLayoutParams().toString());
+                            Log.d("column",layoutParams.columnSpec.toString());
+                            if (dpDeltaX > 100) {
+                                if ((game.canMoveRight(x)) && (x.isHorizontal)){
+                                    game.mooveRight(x);
+                                /*game.removeBloc(x); //SEIGNEUR, lorsque tu add et que tu remove le bloc, tu CHANGE sa posiution dans la grille
+                                x.incCol(); // d'ou l'importance d'avoir une fonction move bloc
+                                game.addBloc(x); //Et si on découplais ? on fait une fonction add et remove qui va juste pas affecter la liste initial quoi.*/
+                                    wasmoved = true;
+                                }
+                            }
+                            if (dpDeltaX < -100) {
+                                if ((game.canMoveLeft(x)) && (x.isHorizontal)){
+                                    game.mooveLeft(x);
+                                /*game.removeBloc(x);
+                                x.decCol();
+                                game.addBloc(x);*/
+                                    wasmoved = true;
+                                }
+                            }
+                            if (dpDeltaY < -100) {
+                                Log.d("UP","mooving up");
+                                if ((game.canMoveUp(x)) && (!x.isHorizontal)){
+                                    game.mooveUp(x);
+                                /*game.removeBloc(x);
+                                x.decRow();
+                                game.addBloc(x);*/
+                                    Log.d("UP","nice you moved Up");
+                                    wasmoved = true;
+                                }
+                                //car1_bloc.decRow();
+                            }
+                            if (dpDeltaY > 100) {
+                                Log.d("down","mooving down");
+                                if ((game.canMoveDown(x)) && (!x.isHorizontal)){
+                                    game.mooveDown(x);
+                                /*game.removeBloc(x);
+                                x.incRow();
+                                game.addBloc(x);*/
+                                    wasmoved = true;
+                                    Log.d("down","nice you moved down");
+                                }
+                                //car1_bloc.incRow();
+                            }
+                            layoutParams.columnSpec = GridLayout.spec(x.col,x.column_span);
+                            layoutParams.rowSpec =  GridLayout.spec(x.row,x.row_span);
+                            Log.d("Result",x.toString());
+                            if (wasmoved == true){
+                                x.view.setLayoutParams(layoutParams);
+                                Log.d("grid",game.toString());
+                                wasmoved = false;
+                            }
+                            //car1_bloc.view.setLayoutParams(layoutParams);
+                            break;
+
+                        case MotionEvent.ACTION_UP:
+                            //Update le state uniquement quand on lache la pièce ! Faut le faire ici
+                            Log.d("Original col", Integer.toString(x.original_col));
+                            Log.d("Current col", Integer.toString(x.col));
+                            Log.d("Original row", Integer.toString(x.original_row));
+                            Log.d("Current row", Integer.toString(x.row));
+                            //Rajouter une condition pour l'affichage, genre if la nouvelle position du bloc diffère de l'original
+                            if ((x.original_col != x.col) || (x.original_row != x.row)){
+                                // on update le nombre de moove et on met à jour les position original des blocs
+                                total_moves += 1;
+                                setResetButtonState(true);
+                                setCancelButtonState(true);
+                                x.update_original_pos();
+                                game.updateState();
+
+                            }
+                            update_mooves();
+                            Log.d("MOOVES",Integer.toString(total_moves));
+                            if (game.checkWin(x)){
+                                createNewVictoryDialog(game);
+                                // TODO replace "1" by the String puzzleNumber
+                                String HighestScoreSoFar = sharedpreferences.getString ("1", "--");
+                                if ((HighestScoreSoFar == "--") || (Integer.parseInt(HighestScoreSoFar) > total_moves)){
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.putString("1", Integer.toString(total_moves));
+                                    editor.commit();
+                                }
+
+                            }
+                            break;
+
+                    }
+
+                    return true;
+                }
+        });
     }
+    }
+
     /** functions to be deleted, just for testing
      * */
     public void loading_Puzzle1(View v){
@@ -274,15 +393,15 @@ public class GameTest extends AppCompatActivity {
     }
 
     public void load_Puzzle(){
-        game.addBloc(target_bloc);
-        game.addBloc(car1_bloc);
-        game.addBloc(car2_bloc);
-        game.addBloc(car3_bloc);
-        game.addBloc(car4_bloc);
-        game.addBloc(car5_bloc);
-        game.addBloc(car6_bloc);
-        game.addBloc(car7_bloc);
-        game.game_ready();
+        game1.addBloc(target_bloc);
+        game1.addBloc(car1_bloc);
+        game1.addBloc(car2_bloc);
+        game1.addBloc(car3_bloc);
+        game1.addBloc(car4_bloc);
+        game1.addBloc(car5_bloc);
+        game1.addBloc(car6_bloc);
+        game1.addBloc(car7_bloc);
+        game1.game_ready();
 
         game2.addBloc(target_bloc2);
         game2.addBloc(car1_bloc2);
@@ -331,6 +450,7 @@ public class GameTest extends AppCompatActivity {
         //setting preferences
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         load_Puzzle();
+        display_Puzzle(current_puzzle);
         update_mooves();
 
 
@@ -370,7 +490,7 @@ public class GameTest extends AppCompatActivity {
         });
 
 
-        for (Bloc x : allBlocs) {
+        /*for (Bloc x : allBlocs) {
             x.view.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -405,16 +525,13 @@ public class GameTest extends AppCompatActivity {
                                     game.mooveRight(x);
                                     /*game.removeBloc(x); //SEIGNEUR, lorsque tu add et que tu remove le bloc, tu CHANGE sa posiution dans la grille
                                     x.incCol(); // d'ou l'importance d'avoir une fonction move bloc
-                                    game.addBloc(x); //Et si on découplais ? on fait une fonction add et remove qui va juste pas affecter la liste initial quoi.*/
+                                    game.addBloc(x); //Et si on découplais ? on fait une fonction add et remove qui va juste pas affecter la liste initial quoi.
                                     wasmoved = true;
                                 }
                             }
                             if (dpDeltaX < -100) {
                                 if ((game.canMoveLeft(x)) && (x.isHorizontal)){
                                     game.mooveLeft(x);
-                                    /*game.removeBloc(x);
-                                    x.decCol();
-                                    game.addBloc(x);*/
                                     wasmoved = true;
                                 }
                             }
@@ -422,9 +539,6 @@ public class GameTest extends AppCompatActivity {
                                 Log.d("UP","mooving up");
                                 if ((game.canMoveUp(x)) && (!x.isHorizontal)){
                                     game.mooveUp(x);
-                                    /*game.removeBloc(x);
-                                    x.decRow();
-                                    game.addBloc(x);*/
                                     Log.d("UP","nice you moved Up");
                                     wasmoved = true;
                                 }
@@ -434,16 +548,13 @@ public class GameTest extends AppCompatActivity {
                                 Log.d("down","mooving down");
                                 if ((game.canMoveDown(x)) && (!x.isHorizontal)){
                                     game.mooveDown(x);
-                                    /*game.removeBloc(x);
-                                    x.incRow();
-                                    game.addBloc(x);*/
                                     wasmoved = true;
                                     Log.d("down","nice you moved down");
                                 }
                             //car1_bloc.incRow();
                         }
-                            layoutParams.columnSpec = GridLayout.spec(x.col,x.column_span);
-                            layoutParams.rowSpec =  GridLayout.spec(x.row,x.row_span);
+                           layoutParams.columnSpec = GridLayout.spec(x.col,x.column_span);
+                           layoutParams.rowSpec =  GridLayout.spec(x.row,x.row_span);
                             Log.d("Result",x.toString());
                             if (wasmoved == true){
                                 x.view.setLayoutParams(layoutParams);
@@ -487,9 +598,11 @@ public class GameTest extends AppCompatActivity {
                     }
 
                     return true;
-                }
-            });
-        }
+                }*/
+            //});
+
+
+
 
         /*bloc.setOnTouchListener(new View.OnTouchListener(){
 
