@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/victory_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Victory!"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
+
+    <ImageView
+        android:id="@+id/victory_image"
+        android:layout_width="50dp"
+        android:layout_height="68dp"
+        android:layout_below="@id/victory_text"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/block_background" />
+
+</RelativeLayout>
