@@ -41,7 +41,9 @@
                     android:layout_width="66dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:backgroundTint="#DFA044"
                     android:onClick="loading_previousPuzzle"
+                    android:tint="#8A642A"
                     app:srcCompat="@android:drawable/ic_media_rew"
                     tools:ignore="SpeakableTextPresentCheck" />
 
@@ -77,7 +79,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:backgroundTint="#6200ED"
                     android:onClick="loading_nextPuzzle"
+                    android:tint="#FEFEFE"
                     app:srcCompat="@android:drawable/ic_media_ff"
                     tools:ignore="SpeakableTextPresentCheck" />
             </LinearLayout>
@@ -423,25 +427,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/load1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="184dp"
-        android:onClick="loading_Puzzle1"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/load2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="184dp"
-        android:onClick="loading_Puzzle2"
-        android:text="Button"
-        app:layout_constraintStart_toEndOf="@+id/load1"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.example.tp1inf8405;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -9,7 +10,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,7 +46,6 @@ public class GameTest extends AppCompatActivity {
     Bloc car1_bloc1 = new Bloc(0,1,1,3, car1, "car1_puzzle1",false);
     Bloc car1_bloc2 = new Bloc(1,3,2,1, car1, "car1_puzzle2",false);
     Bloc car1_bloc3 = new Bloc(0, 1, 2, 1, car1, "car1_puzzle3", false);
-
 
     View car2 ;
     Bloc car2_bloc1 = new Bloc(1,3,3,1, car2,"car2_puzzle1",false);
@@ -89,7 +91,7 @@ public class GameTest extends AppCompatActivity {
 
     public void updateHighScore(String puzzleNumber) {
         TextView v = findViewById(R.id.record3);
-        String score = sharedpreferences.getString (puzzleNumber, "--");
+        String score = sharedpreferences.getString(puzzleNumber, "--");
         v.setText(score + "/" +  MaxHighscores.get(puzzleNumber));
     };
 
@@ -119,7 +121,12 @@ public class GameTest extends AppCompatActivity {
         dialogBuilder.setView(victoryPopupView);
         dialog = dialogBuilder.create();
         dialog.show();
-
+        String HighestScoreSoFar = sharedpreferences.getString (Integer.toString(current_puzzle), "--");
+        if ((HighestScoreSoFar == "--") || (Integer.parseInt(HighestScoreSoFar) > total_moves)){
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString(Integer.toString(current_puzzle), Integer.toString(total_moves));
+            editor.commit();
+        }
         switch (current_puzzle){
             case 1:
                 current_puzzle++;
@@ -128,6 +135,7 @@ public class GameTest extends AppCompatActivity {
             case 2:
                 current_puzzle++;
                 setNextButtonState(false);
+                break;
         }
 
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.victory);
@@ -162,11 +170,30 @@ public class GameTest extends AppCompatActivity {
     public void setPreviousButtonState(boolean bool){
         ImageButton previous = (ImageButton) findViewById(R.id.previous);
         previous.setEnabled(bool);
+
+        if (bool){
+            previous.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF6200ED")));
+            previous.setColorFilter(Color.parseColor("#FFFEFEFE"));
+        }
+        else{
+            previous.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFDFA044")));
+            previous.setColorFilter(Color.parseColor("#FF8A642A"));
+        }
+
     }
 
-    public void setNextButtonState(boolean bool){
+    public void setNextButtonState(boolean bool) {
         ImageButton next = (ImageButton) findViewById(R.id.next);
         next.setEnabled(bool);
+
+        if (bool) {
+            next.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF6200ED")));
+            next.setColorFilter(Color.parseColor("#FFFEFEFE"));
+        } else {
+            next.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFDFA044")));
+            next.setColorFilter(Color.parseColor("#FF8A642A"));
+        }
+
     }
 
     public void setCancelButtonState(boolean bool){
@@ -190,9 +217,7 @@ public class GameTest extends AppCompatActivity {
         update_mooves();
 
         //On met à jour le higher score avec ce qui est stocké dans les préférences
-        // 1 est hardcoded parce qu'on a pas encore codé les autres puzzles
-        //current_puzzle
-        updateHighScore("1");
+        updateHighScore(Integer.toString(current_puzzle));
 
         ArrayList<Bloc> new_blocs = new ArrayList<>() ; // we will add this to the final grid and then litterally redraw everything as it is added
         //actually putting blocs back in there place we will use the fact that they are in the same order
@@ -231,6 +256,7 @@ public class GameTest extends AppCompatActivity {
     public void loadPreviousState(Grid grid){
         int size = grid.states.size();
 
+        Log.d("currrent", Integer.toString(current_puzzle));
         //remember to like, empty the grid.states an truly reinitialize
         total_moves -= 1;
         update_mooves();
@@ -281,7 +307,10 @@ public class GameTest extends AppCompatActivity {
 
     public void display_Puzzle(int k){
         TextView number = findViewById(R.id.puzzle_number);
-        number.setText(k);
+        number.setText(Integer.toString(k));
+
+        updateHighScore(Integer.toString(current_puzzle));
+        reset_mooves();
 
         switch(k) {
             case 1:
@@ -405,13 +434,6 @@ public class GameTest extends AppCompatActivity {
                             Log.d("MOOVES",Integer.toString(total_moves));
                             if (game.checkWin(x)){
                                 createNewVictoryDialog();
-                                String HighestScoreSoFar = sharedpreferences.getString (Integer.toString(current_puzzle), "--");
-                                if ((HighestScoreSoFar == "--") || (Integer.parseInt(HighestScoreSoFar) > total_moves)){
-                                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                                    editor.putString(Integer.toString(current_puzzle), Integer.toString(total_moves));
-                                    editor.commit();
-                                }
-
                             }
                             break;
 
