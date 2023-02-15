@@ -119,13 +119,13 @@ public class Bloc{
             this.row = this.row -1;}
     }
     /** Function used to update the original position of the bloc once the bloc has been
-     *  sucessfully mooved
+     *  sucessfully moved
      * */
     public void update_original_pos(){
         this.original_col = this.col;
         this.original_row = this.row;
     }
-    /** Function that update the view linked to the bloc, shoudl work well
+    /** Function that update the view linked to the bloc, should work well
      * */
     public void update_view(){
         float factor = this.view.getContext().getResources().getDisplayMetrics().density;

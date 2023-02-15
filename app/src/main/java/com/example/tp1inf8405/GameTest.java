@@ -37,6 +37,9 @@ public class GameTest extends AppCompatActivity {
     float xDown = 0, yDown = 0;
     int total_moves = 0;
 
+    /**
+     * This part initializes the target block and the 7 blocs for each one of the three puzzles.
+     */
     View target;
     Bloc target_bloc1 = new Bloc(2,1,1,2, target, "target_puzzle1",true);
     Bloc target_bloc2 = new Bloc(2,1,1,2, target, "target_puzzle2",true);
@@ -105,17 +108,37 @@ public class GameTest extends AppCompatActivity {
     }
 
     public void update_mooves(){
+        /**
+         * Updating the number of moves displayed in the TextView above the puzzle.
+         *
+         * Called :
+         * - every time we need to increment the number of moves : when moving a block.
+         * - every time we need to decrement the number of moves : when deleting the previous move.
+         */
         TextView v = findViewById(R.id.nb_moves);
         v.setText(Integer.toString(total_moves));
     }
 
     public void reset_mooves() {
+        /**
+         * Resetting the number of moves displayed in the TextView above the puzzle.
+         *
+         * Called :
+         * - every time we need to reset the number of moves (when starting a new puzzle or resetting the current one).
+         */
         total_moves = 0;
         TextView v = findViewById(R.id.nb_moves);
         v.setText(Integer.toString(total_moves));
     }
 
     public void createNewVictoryDialog(){
+        /**
+         * Creates and displays the victory bubble on top of the current puzzle for a limited duration of time.
+         * Duration : 3s (3000ms)
+         *
+         * Called :
+         * - every time there is a win.
+         */
         dialogBuilder = new AlertDialog.Builder(this);
         final View victoryPopupView = getLayoutInflater().inflate(R.layout.activity_pop_up_victory, null);
         dialogBuilder.setView(victoryPopupView);
@@ -163,11 +186,34 @@ public class GameTest extends AppCompatActivity {
     }
 
     public void setResetButtonState(boolean bool){
+        /**
+         * Sets the "reset" button's "enabled" mode.
+         *
+         * Called :
+         * - every time it must be disabled (false) (when game already been reset or just started)
+         * - every time it must be enabled (true) (when game can be reset)
+         *
+         */
         Button reset = (Button) findViewById(R.id.reset);
         reset.setEnabled(bool);
     }
 
     public void setPreviousButtonState(boolean bool){
+        /**
+         * Sets the "previous" button's "enabled" mode and color.
+         *
+         * Colors :
+         * - "#FFFEFEFE" (white) : disabled button
+         * - "#FF8A642A" (violet) : enabled button
+         *
+         * Text colors :
+         * - "#FF8A642A" (grey) : disabled button
+         * - "#FFFEFEFE" (white) : enabled button
+         *
+         * Called :
+         * - every time it must be disabled (false) (when current puzzle is puzzle 1)
+         * - every time it must be enabled (true) (when current puzzle is puzzle 2 or 3)
+         */
         ImageButton previous = (ImageButton) findViewById(R.id.previous);
         previous.setEnabled(bool);
 
@@ -183,6 +229,22 @@ public class GameTest extends AppCompatActivity {
     }
 
     public void setNextButtonState(boolean bool) {
+        /**
+         * Sets the "next" button's "enabled" mode and color.
+         *
+         * Background colors :
+         * - "#FFDFA044" (grey) : disabled button
+         * - "#FF6200ED" (violet) : enabled button
+         *
+         * Text colors :
+         * - "#FF8A642A" (grey) : disabled button
+         * - "#FFFEFEFE" (white) : enabled button
+         *
+         *
+         * Called :
+         * - every time it must be disabled (false) (when current puzzle is puzzle 1)
+         * - every time it must be enabled (true) (when current puzzle is puzzle 2 or 3)
+         */
         ImageButton next = (ImageButton) findViewById(R.id.next);
         next.setEnabled(bool);
 
@@ -197,12 +259,28 @@ public class GameTest extends AppCompatActivity {
     }
 
     public void setCancelButtonState(boolean bool){
+        /**
+         * Sets the "cancel" button's "enabled" mode.
+         *
+         * Called :
+         * - every time it must be disabled (false) (when no move made)
+         * - every time it must be enabled (true) (when one or more moves made)
+         *
+         */
         Button cancel = (Button) findViewById(R.id.cancel_move);
         cancel.setEnabled(bool);
     }
 
     /*This function loads the initial state of a Game using what is stored in the Grid */
     public void loadInitialState(Grid grid){
+        /**
+         * C
+         *
+         * Called :
+         * - everytime we start the game.
+         * - everytime we start a new puzzle.
+         *
+         */
         //remember to like, empty the grid.states an truly reinitialize
         reset_mooves();
         //ICI FAUT CLEAN LA GRID YA UN SOUCI DE COLLISION
@@ -306,6 +384,13 @@ public class GameTest extends AppCompatActivity {
     }
 
     public void display_Puzzle(int k){
+        /**
+         * Displays the current puzzle by :
+         * - changing the puzzle number displayed above the puzzle
+         * - resetting the number of move displayed above the puzzle
+         * - reinitializing the other puzzles
+         * - preparing for the use of the grid of the new puzzle
+         */
         TextView number = findViewById(R.id.puzzle_number);
         number.setText(Integer.toString(k));
 
@@ -415,7 +500,14 @@ public class GameTest extends AppCompatActivity {
                             break;
 
                         case MotionEvent.ACTION_UP:
-                            //Update le state uniquement quand on lache la pièce ! Faut le faire ici
+                            /**
+                             * The finger releases the screen.
+                             *
+                             * Launch the update of :
+                             * - grid state
+                             * - number of moves
+                             * - "reset" and "cancel" buttons displays if need be
+                             */
                             Log.d("Original col", Integer.toString(x.original_col));
                             Log.d("Current col", Integer.toString(x.col));
                             Log.d("Original row", Integer.toString(x.original_row));
@@ -459,6 +551,9 @@ public class GameTest extends AppCompatActivity {
 
     }
     public void loading_nextPuzzle(View v){
+        /**
+         *
+         */
         current_puzzle++;
         if(current_puzzle==3){
             setNextButtonState(false);
@@ -470,6 +565,9 @@ public class GameTest extends AppCompatActivity {
     }
 
     public void load_Puzzle(){
+        /**
+         * Creates the puzzle by adding the blocks one by one to the puzzles' grids (for puzzles 1, 2 and 3).
+         */
         game1.addBloc(target_bloc1);
         game1.addBloc(car1_bloc1);
         game1.addBloc(car2_bloc1);
@@ -505,6 +603,10 @@ public class GameTest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_test);
+
+        /**
+         * This part fetch the block's TextViews in the xml activity_game_test.xml using findViewById function.
+         */
         target = findViewById(R.id.target);
         car1 = findViewById(R.id.car1);
         car2 = findViewById(R.id.car2);
@@ -514,6 +616,9 @@ public class GameTest extends AppCompatActivity {
         car6 = findViewById(R.id.car6);
         car7 = findViewById(R.id.car7);
 
+        /**
+         * This part associates the block's TextViews with the Block objects. Respectively for Puzzle 1, 2 and 3.
+         */
         target_bloc1.set_view(target);
         car1_bloc1.set_view(car1);
         car2_bloc1.set_view(car2);
@@ -560,6 +665,9 @@ public class GameTest extends AppCompatActivity {
         allBlocs.addAll(game2.blocs);
         allBlocs.addAll(game3.blocs);
 
+        /**
+         * This following part initializes the reset button.
+         */
         Button res_button = (Button) findViewById(R.id.reset);
         res_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -570,8 +678,10 @@ public class GameTest extends AppCompatActivity {
             }
         });
 
+        /**
+         * This following part initializes the cancel button.
+         */
         Button cancel_button = (Button) findViewById(R.id.cancel_move);
-
         cancel_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("CANCEL_START","you are trying to cancel");
