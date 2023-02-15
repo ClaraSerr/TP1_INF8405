@@ -5,7 +5,8 @@
     android:id="@+id/all_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFB74D"
+    android:background="#ffffff"
+    android:requiresFadingEdge="vertical"
     tools:context=".GameTest">
 
     <LinearLayout
@@ -41,10 +42,11 @@
                     android:layout_width="66dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:backgroundTint="#DFA044"
+                    android:backgroundTint="#e0e0e0"
+                    android:elevation="0dp"
                     android:onClick="loading_previousPuzzle"
-                    android:tint="#8A642A"
                     app:srcCompat="@android:drawable/ic_media_rew"
+                    app:tint="#959595"
                     tools:ignore="SpeakableTextPresentCheck" />
 
                 <LinearLayout
@@ -79,10 +81,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:backgroundTint="#6200ED"
+                    android:backgroundTint="#886b4a"
+                    android:elevation="10dp"
                     android:onClick="loading_nextPuzzle"
-                    android:tint="#FEFEFE"
                     app:srcCompat="@android:drawable/ic_media_ff"
+                    app:tint="#FEFEFE"
                     tools:ignore="SpeakableTextPresentCheck" />
             </LinearLayout>
 
@@ -159,13 +162,24 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/background"
+        android:layout_width="310dp"
+        android:layout_height="310dp"
+        android:background="@drawable/background"
+        android:elevation="-10dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="350dp"
         android:layout_height="350dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
-        android:background="#3CC394"
+        android:background="#00886B4A"
         android:columnCount="7"
         android:rowCount="7"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
@@ -181,7 +195,8 @@
             android:layout_rowSpan="1"
             android:layout_column="0"
             android:layout_columnSpan="1"
-            android:background="#FFB74D" />
+            android:background="#ffffff"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/pat2"
@@ -191,7 +206,8 @@
             android:layout_rowSpan="1"
             android:layout_column="0"
             android:layout_columnSpan="1"
-            android:background="#FFB74D" />
+            android:background="#ffffff"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/pat3"
@@ -201,7 +217,8 @@
             android:layout_rowSpan="1"
             android:layout_column="0"
             android:layout_columnSpan="1"
-            android:background="#FFB74D" />
+            android:background="#ffffff"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/pat4"
@@ -211,7 +228,8 @@
             android:layout_rowSpan="1"
             android:layout_column="0"
             android:layout_columnSpan="1"
-            android:background="#FFB74D" />
+            android:background="#ffffff"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/pat5"
@@ -221,7 +239,8 @@
             android:layout_rowSpan="1"
             android:layout_column="0"
             android:layout_columnSpan="1"
-            android:background="#FFB74D" />
+            android:background="#ffffff"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/pat6"
@@ -231,7 +250,8 @@
             android:layout_rowSpan="1"
             android:layout_column="0"
             android:layout_columnSpan="1"
-            android:background="#FFB74D" />
+            android:background="#ffffff"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/pat7"
@@ -241,7 +261,8 @@
             android:layout_rowSpan="1"
             android:layout_column="0"
             android:layout_columnSpan="1"
-            android:background="#FFB74D" />
+            android:background="#ffffff"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/pat8"
@@ -251,7 +272,8 @@
             android:layout_rowSpan="1"
             android:layout_column="1"
             android:layout_columnSpan="1"
-            android:background="#FFB74D" />
+            android:background="#ffffff"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/pat9"
@@ -261,7 +283,8 @@
             android:layout_rowSpan="1"
             android:layout_column="2"
             android:layout_columnSpan="1"
-            android:background="#FFB74D" />
+            android:background="#ffffff"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/pat10"
@@ -271,7 +294,8 @@
             android:layout_rowSpan="1"
             android:layout_column="3"
             android:layout_columnSpan="1"
-            android:background="#FFB74D" />
+            android:background="#ffffff"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/pat11"
@@ -281,7 +305,8 @@
             android:layout_rowSpan="1"
             android:layout_column="4"
             android:layout_columnSpan="1"
-            android:background="#FFB74D" />
+            android:background="#ffffff"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/pat12"
@@ -291,7 +316,8 @@
             android:layout_rowSpan="1"
             android:layout_column="5"
             android:layout_columnSpan="1"
-            android:background="#FFB74D" />
+            android:background="#ffffff"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/pat13"
@@ -301,7 +327,8 @@
             android:layout_rowSpan="1"
             android:layout_column="6"
             android:layout_columnSpan="1"
-            android:background="#FFB74D" />
+            android:background="#ffffff"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/target"
@@ -424,7 +451,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -432,8 +458,11 @@
         android:layout_width="37dp"
         android:layout_height="51dp"
         android:layout_marginBottom="50dp"
-        android:background="#3CC394"
-        android:text="> \n> \n>"
+        android:background="#886b4a"
+        android:text=">  \n>  \n>  "
+        android:textAlignment="viewEnd"
+        android:textSize="13.5sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintStart_toEndOf="@+id/gridLayout"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
