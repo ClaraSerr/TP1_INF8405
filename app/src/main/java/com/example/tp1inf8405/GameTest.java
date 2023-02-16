@@ -209,13 +209,13 @@ public class GameTest extends AppCompatActivity {
         /**
          * Sets the "previous" button's "enabled" mode and color.
          *
-         * Colors :
-         * - "#FFFEFEFE" (white) : disabled button
-         * - "#FF8A642A" (violet) : enabled button
+         * Background colors :
+         * - "#e0e0e0" : disabled button
+         * - "#886b4a" : enabled button
          *
          * Text colors :
-         * - "#FF8A642A" (grey) : disabled button
-         * - "#FFFEFEFE" (white) : enabled button
+         * - "#959595" : disabled button
+         * - "#FFFEFEFE" : enabled button
          *
          * Called :
          * - every time it must be disabled (false) (when current puzzle is puzzle 1)
@@ -355,8 +355,7 @@ public class GameTest extends AppCompatActivity {
         Grid initialState = grid.states.get(size-2); //on va à l'état -1 puis on supprimer l'état actuel de la liste des states
 
 
-        ArrayList<Bloc> new_blocs = new ArrayList<>() ; // we will add this to the final grid and then litterally redraw everything as it is added
-        //actually putting blocs back in there place we will use the fact that they are in the same order
+        ArrayList<Bloc> new_blocs = new ArrayList<>() ;
         Log.d("Initial state",initialState.toString());
         int nb_bloc = grid.blocs.size();
         for(int k=0 ;k< nb_bloc; k++){
@@ -424,7 +423,7 @@ public class GameTest extends AppCompatActivity {
                             /**
                              * The finger touches the screen. Starts calculating the movement.
                              */
-                            xDown = event.getX(); // need to update this when you moove to correct jittering effect
+                            xDown = event.getX();
                             yDown = event.getY();
                             Log.d("DOWN", x.name + " was touched");
                             Log.d("grid",game.toString());
