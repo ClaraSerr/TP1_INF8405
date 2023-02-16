@@ -36,13 +36,11 @@ public class Grid {
      *
      */
     public Grid(Grid grid){
-        //Faut une deepcopy de la Array list... bon
         this.blocs = new ArrayList<>();
         for (int k=0; k<grid.blocs.size(); k++){
             this.blocs.add(new Bloc(grid.blocs.get(k)));
             Log.d("STATE_CREATION",grid.blocs.get(k).toString());
         }
-        ; // I hope this is a deepcopy orr I might have prroblems
         this.width = grid.width;
         this.height = grid.height;
         this.grid = new int[width][height];
@@ -66,7 +64,7 @@ public class Grid {
      * */
     public void updateState() {
         if ((game_started) && (!reseting)) {
-            states.add(new Grid(this)); //used to add another state of the grid to the list
+            states.add(new Grid(this));
         }
     }
     /**
@@ -76,7 +74,6 @@ public class Grid {
         for (int i = b.row; i < b.row + b.row_span; i++) {
             for (int j = b.col; j < b.col + b.column_span; j++) {
                 grid[i][j] = 1;
-                //Log.d("grid",grid.toString());
             }
         }
     }
@@ -110,7 +107,6 @@ public class Grid {
         for (int i = b.row; i < b.row + b.row_span; i++) {
             for (int j = b.col; j < b.col + b.column_span; j++) {
                 grid[i][j] = 1;
-                //Log.d("grid",grid.toString());
             }
         }
     }
@@ -161,7 +157,6 @@ public class Grid {
     /** Check if it is possible to move to the down.
      * */
     public boolean canMoveDown(Bloc b) {
-        //Here we test occupency and boundaries differently because it is tricky. row_span 0 and 11 basically have the same effect so we have to be smart
         for (int j = b.col; j < b.col + b.column_span; j++) {
             if ((b.row + (b.row_span) >= (this.height -1)) || isOccupied(b.row + b.row_span, j)) {
                 return false;
@@ -184,39 +179,29 @@ public class Grid {
     /** Used to reload the game to a previous state using the states Array List
      * */
     public void reload(ArrayList<Bloc> b_list){
-        //now we must replace our bloc list with this one and carefully remove and readd every bloc...
         this.reseting = true;
         int nb_bloc = b_list.size();
         clear_grid();
-        /*(int k=0; k< nb_bloc; k++){
-            this.removeBlockFromGrid(this.blocs.get(0)); // If you use k on a list that dynamically change size you will break everything
-        }*/
         blocs.clear();
         for(int k=0; k< nb_bloc; k++){
             Log.d("LOGGING_blocs",Integer.toString(k));
-            this.addBloc(b_list.get(k)); // Look, we add it to the colection AND to the grid, this might work
+            this.addBloc(b_list.get(k));
         }
         this.reseting = false;
-        // When reloading very important to destroy all previous states
         this.states.clear();
-        this.updateState();// okay this should do i, it feels right
+        this.updateState();
 
     }
     public void loadPrevious(ArrayList<Bloc> b_list){
-        //now we must replace our bloc list with this one and carefully remove and readd every bloc...
         this.reseting = true;
         int nb_bloc = b_list.size();
         clear_grid();
-        /*(int k=0; k< nb_bloc; k++){
-            this.removeBlockFromGrid(this.blocs.get(0)); // If you use k on a list that dynamically change size you will break everything
-        }*/
         blocs.clear();
         for(int k=0; k< nb_bloc; k++){
             Log.d("LOGGING_blocs",Integer.toString(k));
-            this.addBloc(b_list.get(k)); // Look, we add it to the colection AND to the grid, this might work
+            this.addBloc(b_list.get(k));
         }
         this.reseting = false;
-        // When reloading very important to destroy all previous states
         this.states.remove(this.states.size()-1);
 
     }
@@ -237,32 +222,28 @@ public class Grid {
      * */
     public void mooveUp(Bloc b){
         this.removeBlockFromGrid(b);
-        b.decRow(); // Normalement par la magie de spointeurs d'ID la liste update automatiquement la position de l'object actuel. En priant pour que ce soit bien le même
-        // Au pire il faut reconstruire la liste à chaque fois ( c'est usant)
+        b.decRow();
         this.addBlocToGrid(b);
     }
     /** Used to moove a bloc that belongs to the grid down
      * */
     public void mooveDown(Bloc b){
         this.removeBlockFromGrid(b);
-        b.incRow(); // Normalement par la magie de spointeurs d'ID la liste update automatiquement la position de l'object actuel. En priant pour que ce soit bien le même
-        // Au pire il faut reconstruire la liste à chaque fois ( c'est usant)
+        b.incRow();
         this.addBlocToGrid(b);
     }
     /** Used to moove a bloc that belongs to the grid left
      * */
     public void mooveLeft(Bloc b){
         this.removeBlockFromGrid(b);
-        b.decCol(); // Normalement par la magie de spointeurs d'ID la liste update automatiquement la position de l'object actuel. En priant pour que ce soit bien le même
-        // Au pire il faut reconstruire la liste à chaque fois ( c'est usant)
+        b.decCol();
         this.addBlocToGrid(b);
     }
     /** Used to moove a bloc that belongs to the grid right
      * */
     public void mooveRight(Bloc b){
         this.removeBlockFromGrid(b);
-        b.incCol(); // Normalement par la magie de spointeurs d'ID la liste update automatiquement la position de l'object actuel. En priant pour que ce soit bien le même
-        // Au pire il faut reconstruire la liste à chaque fois ( c'est usant)
+        b.incCol();
         this.addBlocToGrid(b);
     }
 

@@ -77,7 +77,6 @@ public class Bloc{
         res += "original_col = " + Integer.toString(original_col) + " \n ";
         res += "original_row = " + Integer.toString(original_row) + " \n ";
         return res;
-        //return super.toString();
     }
     /**
      * Function that increments the column
@@ -90,7 +89,7 @@ public class Bloc{
         }else{
             test = this.col + 1;
         }
-        if (test < 8 ) { //this is a cheat because that's Grid class job
+        if (test < 8 ) {
             this.col = this.col +1;
         }
         }

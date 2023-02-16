@@ -90,7 +90,7 @@ public class GameTest extends AppCompatActivity {
     Grid game1 = new Grid(7,7);
     Grid game2 = new Grid(7,7);
     Grid game3 = new Grid(7,7);
-    Grid game = game1; // Normalement il suffit juste de changer vers quel grille game pointe. C'est pas une deep copy mais deux variables qui pointent aux même endroit pour l'instant.
+    Grid game = game1;
 
 
     public Map<String, Integer> MaxHighscores = new HashMap<String, Integer>() {{
@@ -293,7 +293,6 @@ public class GameTest extends AppCompatActivity {
          * - everytime we start a new puzzle.
          *
          */
-        //remember to like, empty the grid.states an truly reinitialize
         reset_mooves();
 
         //getting the desired state
@@ -308,12 +307,10 @@ public class GameTest extends AppCompatActivity {
         //On met à jour le higher score avec ce qui est stocké dans les préférences
         updateHighScore(Integer.toString(current_puzzle));
 
-        ArrayList<Bloc> new_blocs = new ArrayList<>() ; // we will add this to the final grid and then litterally redraw everything as it is added
-        //actually putting blocs back in there place we will use the fact that they are in the same order
+        ArrayList<Bloc> new_blocs = new ArrayList<>() ;
         Log.d("Initial state",initialState.toString());
         int nb_bloc = grid.blocs.size();
         for(int k=0 ;k< nb_bloc; k++){
-            //I mean, might as well load the entire initial state right ?
 
             Bloc b = grid.blocs.get(k);
             Log.d("LOGGING_blocs" + b.name,Integer.toString(k));
@@ -325,20 +322,14 @@ public class GameTest extends AppCompatActivity {
             new_blocs.add(b);
             Log.d("Nouveau_blocs",b.toString());
         }
-        //Here you call the function we will create. Its grid.reload.
         grid.reload(new_blocs);
-        //Now that the virtual grid is reloaded, you need to update the ACTUAL view, goodluck with that my G
-        //Maybe begin by browsing the blocs within ? They should be linked to the same views soits just a matter of updating the views within the blocs... I think
         for(int k=0 ;k< nb_bloc; k++){
-            //I mean, might as well load the entire initial state right ?
             Bloc b = grid.blocs.get(k);
             GridLayout.LayoutParams layoutParams = (GridLayout.LayoutParams) b.view.getLayoutParams();
-            //okay now modify the view thingy with the actual parameters of your bloc
             layoutParams.columnSpec = GridLayout.spec(b.col,b.column_span);
             layoutParams.rowSpec =  GridLayout.spec(b.row,b.row_span);
             b.view.setLayoutParams(layoutParams);
             b.update_original_pos();
-            //AYO THIS MIGHT DO IT
         }
     }
 
@@ -353,7 +344,6 @@ public class GameTest extends AppCompatActivity {
         int size = grid.states.size();
 
         Log.d("currrent", Integer.toString(current_puzzle));
-        //remember to like, empty the grid.states an truly reinitialize
         total_moves -= 1;
         update_mooves();
         if (total_moves==0){
@@ -370,7 +360,6 @@ public class GameTest extends AppCompatActivity {
         Log.d("Initial state",initialState.toString());
         int nb_bloc = grid.blocs.size();
         for(int k=0 ;k< nb_bloc; k++){
-            //I mean, might as well load the entire initial state right ?
 
             Bloc b = grid.blocs.get(k);
             Log.d("LOGGING_blocs" + b.name,Integer.toString(k));
@@ -382,15 +371,10 @@ public class GameTest extends AppCompatActivity {
             new_blocs.add(b);
             Log.d("Nouveau_blocs",b.toString());
         }
-        //Here you call the function we will create. Its grid.reload.
         grid.loadPrevious(new_blocs);
-        //Now that the virtual grid is reloaded, you need to update the ACTUAL view, goodluck with that my G
-        //Maybe begin by browsing the blocs within ? They should be linked to the same views soits just a matter of updating the views within the blocs... I think
         for(int k=0 ;k< nb_bloc; k++){
-            //I mean, might as well load the entire initial state right ?
             Bloc b = grid.blocs.get(k);
             GridLayout.LayoutParams layoutParams = (GridLayout.LayoutParams) b.view.getLayoutParams();
-            //okay now modify the view thingy with the actual parameters of your bloc
             layoutParams.columnSpec = GridLayout.spec(b.col,b.column_span);
             layoutParams.rowSpec =  GridLayout.spec(b.row,b.row_span);
             b.view.setLayoutParams(layoutParams);
