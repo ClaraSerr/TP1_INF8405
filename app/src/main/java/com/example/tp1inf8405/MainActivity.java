@@ -25,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void exit(View v) {
         // super.onBackPressed();
-        finish();
+        moveTaskToBack(true);
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
     }
 
     public void play(View v){
