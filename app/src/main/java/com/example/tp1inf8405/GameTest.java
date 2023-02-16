@@ -533,7 +533,7 @@ public class GameTest extends AppCompatActivity {
     }
     }
 
-    /** functions to be deleted, just for testing
+    /** function used to load the previous puzzle
      * */
     public void loading_previousPuzzle(View v){
         current_puzzle--;
@@ -546,10 +546,9 @@ public class GameTest extends AppCompatActivity {
         display_Puzzle(current_puzzle);
 
     }
+    /**Function used to load the next puzzle
+     * */
     public void loading_nextPuzzle(View v){
-        /**
-         *
-         */
         current_puzzle++;
         if(current_puzzle==3){
             setNextButtonState(false);
