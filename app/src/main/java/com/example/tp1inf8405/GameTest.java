@@ -38,13 +38,16 @@ public class GameTest extends AppCompatActivity {
     int total_moves = 0;
 
     /**
-     * This part initializes the target block and the 7 blocs for each one of the three puzzles.
+     * This part initializes the target block and the 7 blocs as Block objects for each one of the three puzzles.
      */
+
+    //The target block
     View target;
     Bloc target_bloc1 = new Bloc(2,1,1,2, target, "target_puzzle1",true);
     Bloc target_bloc2 = new Bloc(2,1,1,2, target, "target_puzzle2",true);
     Bloc target_bloc3 = new Bloc(2, 1, 1, 2, target, "target_puzzle3", true);
 
+    //Regular blocks
     View car1 ;
     Bloc car1_bloc1 = new Bloc(0,1,1,3, car1, "car1_puzzle1",false);
     Bloc car1_bloc2 = new Bloc(1,3,2,1, car1, "car1_puzzle2",false);
@@ -80,10 +83,14 @@ public class GameTest extends AppCompatActivity {
     Bloc car7_bloc2 = new Bloc(5,3,1,2, car7, "car7_puzzle2",false);
     Bloc car7_bloc3 = new Bloc(2, 5, 3, 1, car7, "car7_puzzle3", false);
 
+    /**
+     * This part initializes the 3 grids for the 3 puzzles.
+     */
+    //The grid
     Grid game1 = new Grid(7,7);
     Grid game2 = new Grid(7,7);
     Grid game3 = new Grid(7,7);
-    Grid game = game1; // Normalement il suffit juste de changer vers quel grille game pointe. C'est pas une deep copy mais deux variables qui pointent aux même endroit pour l'instant
+    Grid game = game1; // Normalement il suffit juste de changer vers quel grille game pointe. C'est pas une deep copy mais deux variables qui pointent aux même endroit pour l'instant.
 
 
     public Map<String, Integer> MaxHighscores = new HashMap<String, Integer>() {{
@@ -93,6 +100,12 @@ public class GameTest extends AppCompatActivity {
     }};
 
     public void updateHighScore(String puzzleNumber) {
+        /**
+         * Updating the highest score displayed in the TextView above the puzzle.
+         *
+         * Called :
+         * - every time we finish a puzzle.
+         */
         TextView v = findViewById(R.id.record3);
         String score = sharedpreferences.getString(puzzleNumber, "--");
         v.setText(score + "/" +  MaxHighscores.get(puzzleNumber));
@@ -100,12 +113,6 @@ public class GameTest extends AppCompatActivity {
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-
-    public void back_menu(View v){
-        //test from Studio 3
-        Intent i= new Intent(this, MainActivity.class);
-        startActivity(i);
-    }
 
     public void update_mooves(){
         /**
@@ -235,12 +242,12 @@ public class GameTest extends AppCompatActivity {
          * Sets the "next" button's "enabled" mode and color.
          *
          * Background colors :
-         * - "#FFDFA044" (grey) : disabled button
-         * - "#FF6200ED" (violet) : enabled button
+         * - "#e0e0e0" : disabled button
+         * - "#886b4a" : enabled button
          *
          * Text colors :
-         * - "#FF8A642A" (grey) : disabled button
-         * - "#FFFEFEFE" (white) : enabled button
+         * - "#959595" : disabled button
+         * - "#FFFEFEFE" : enabled button
          *
          *
          * Called :
@@ -278,7 +285,8 @@ public class GameTest extends AppCompatActivity {
     /*This function loads the initial state of a Game using what is stored in the Grid */
     public void loadInitialState(Grid grid){
         /**
-         * C
+         *
+         * Resets the states of the grid and the number of moves displays to come back to the original state on the desired grid.
          *
          * Called :
          * - everytime we start the game.
@@ -287,7 +295,6 @@ public class GameTest extends AppCompatActivity {
          */
         //remember to like, empty the grid.states an truly reinitialize
         reset_mooves();
-        //ICI FAUT CLEAN LA GRID YA UN SOUCI DE COLLISION
 
         //getting the desired state
         Grid initialState = grid.states.get(0);
@@ -336,6 +343,13 @@ public class GameTest extends AppCompatActivity {
     }
 
     public void loadPreviousState(Grid grid){
+        /**
+         * Loads the previous state of the selected grid and decrements the number of moves display.
+         *
+         * Called :
+         * - every time we click the "cancel" button
+         *
+         */
         int size = grid.states.size();
 
         Log.d("currrent", Integer.toString(current_puzzle));
@@ -346,10 +360,8 @@ public class GameTest extends AppCompatActivity {
             setResetButtonState(false);
             setCancelButtonState(false);
         }
-        //ICI FAUT CLEAN LA GRID YA UN SOUCI DE COLLISION
 
         //getting the desired state
-
         Grid initialState = grid.states.get(size-2); //on va à l'état -1 puis on supprimer l'état actuel de la liste des states
 
 
@@ -383,7 +395,6 @@ public class GameTest extends AppCompatActivity {
             layoutParams.rowSpec =  GridLayout.spec(b.row,b.row_span);
             b.view.setLayoutParams(layoutParams);
             b.update_original_pos();
-            //AYO THIS MIGHT DO IT
         }
     }
 
@@ -426,6 +437,9 @@ public class GameTest extends AppCompatActivity {
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getActionMasked()) {
                         case MotionEvent.ACTION_DOWN:
+                            /**
+                             * The finger touches the screen. Starts calculating the movement.
+                             */
                             xDown = event.getX(); // need to update this when you moove to correct jittering effect
                             yDown = event.getY();
                             Log.d("DOWN", x.name + " was touched");
@@ -434,11 +448,14 @@ public class GameTest extends AppCompatActivity {
                             break;
 
                         case MotionEvent.ACTION_MOVE:
+                            /**
+                             * The finger moves on the screen.
+                             */
                             float movedX, movedY;
                             boolean wasmoved = false;
                             movedX = event.getX();
                             movedY = event.getY();
-                            // calculate how much the user moviedhis finger
+                            // calculate how much the user moved his finger
                             float distanceX = movedX - xDown;
                             float distanceY = movedY - yDown;
 
@@ -450,21 +467,23 @@ public class GameTest extends AppCompatActivity {
                             Log.d("MOVE","CAR1 was moved");
                             Log.d("PARAM",v.getLayoutParams().toString());
                             Log.d("column",layoutParams.columnSpec.toString());
+
+                            /**
+                             * Movement of the bloc depending on the movement of the finger :
+                             * - dpDeltaX : the number of dp horizontally
+                             * - dpDeltaY : the number of dp vertically
+                             *
+                             * Movement of blocks is initiate only if the finger moves more than one block (100dp).
+                             */
                             if (dpDeltaX > 100) {
                                 if ((game.canMoveRight(x)) && (x.isHorizontal)){
                                     game.mooveRight(x);
-                                /*game.removeBloc(x); //SEIGNEUR, lorsque tu add et que tu remove le bloc, tu CHANGE sa posiution dans la grille
-                                x.incCol(); // d'ou l'importance d'avoir une fonction move bloc
-                                game.addBloc(x); //Et si on découplais ? on fait une fonction add et remove qui va juste pas affecter la liste initial quoi.*/
                                     wasmoved = true;
                                 }
                             }
                             if (dpDeltaX < -100) {
                                 if ((game.canMoveLeft(x)) && (x.isHorizontal)){
                                     game.mooveLeft(x);
-                                /*game.removeBloc(x);
-                                x.decCol();
-                                game.addBloc(x);*/
                                     wasmoved = true;
                                 }
                             }
@@ -472,25 +491,17 @@ public class GameTest extends AppCompatActivity {
                                 Log.d("UP","mooving up");
                                 if ((game.canMoveUp(x)) && (!x.isHorizontal)){
                                     game.mooveUp(x);
-                                /*game.removeBloc(x);
-                                x.decRow();
-                                game.addBloc(x);*/
                                     Log.d("UP","nice you moved Up");
                                     wasmoved = true;
                                 }
-                                //car1_bloc.decRow();
                             }
                             if (dpDeltaY > 100) {
                                 Log.d("down","mooving down");
                                 if ((game.canMoveDown(x)) && (!x.isHorizontal)){
                                     game.mooveDown(x);
-                                /*game.removeBloc(x);
-                                x.incRow();
-                                game.addBloc(x);*/
                                     wasmoved = true;
                                     Log.d("down","nice you moved down");
                                 }
-                                //car1_bloc.incRow();
                             }
                             layoutParams.columnSpec = GridLayout.spec(x.col,x.column_span);
                             layoutParams.rowSpec =  GridLayout.spec(x.row,x.row_span);
@@ -500,7 +511,6 @@ public class GameTest extends AppCompatActivity {
                                 Log.d("grid",game.toString());
                                 wasmoved = false;
                             }
-                            //car1_bloc.view.setLayoutParams(layoutParams);
                             break;
 
                         case MotionEvent.ACTION_UP:
@@ -516,9 +526,8 @@ public class GameTest extends AppCompatActivity {
                             Log.d("Current col", Integer.toString(x.col));
                             Log.d("Original row", Integer.toString(x.original_row));
                             Log.d("Current row", Integer.toString(x.row));
-                            //Rajouter une condition pour l'affichage, genre if la nouvelle position du bloc diffère de l'original
                             if ((x.original_col != x.col) || (x.original_row != x.row)){
-                                // on update le nombre de moove et on met à jour les position original des blocs
+                                // on update le nombre de moves et on met à jour les position original des blocs
                                 total_moves += 1;
                                 setResetButtonState(true);
                                 setCancelButtonState(true);
