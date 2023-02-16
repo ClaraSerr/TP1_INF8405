@@ -218,12 +218,14 @@ public class GameTest extends AppCompatActivity {
         previous.setEnabled(bool);
 
         if (bool){
-            previous.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF6200ED")));
-            previous.setColorFilter(Color.parseColor("#FFFEFEFE"));
+            previous.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#886b4a")));
+            previous.setColorFilter(Color.parseColor("#FEFEFE"));
+            previous.setElevation(10);
         }
         else{
-            previous.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFDFA044")));
-            previous.setColorFilter(Color.parseColor("#FF8A642A"));
+            previous.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#e0e0e0")));
+            previous.setColorFilter(Color.parseColor("#959595"));
+            previous.setElevation(0);
         }
 
     }
@@ -249,11 +251,13 @@ public class GameTest extends AppCompatActivity {
         next.setEnabled(bool);
 
         if (bool) {
-            next.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF6200ED")));
-            next.setColorFilter(Color.parseColor("#FFFEFEFE"));
+            next.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#886b4a")));
+            next.setColorFilter(Color.parseColor("#FEFEFE"));
+            next.setElevation(10);
         } else {
-            next.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFDFA044")));
-            next.setColorFilter(Color.parseColor("#FF8A642A"));
+            next.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#e0e0e0")));
+            next.setColorFilter(Color.parseColor("#959595"));
+            next.setElevation(0);
         }
 
     }
