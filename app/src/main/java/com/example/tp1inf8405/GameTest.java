@@ -522,6 +522,7 @@ public class GameTest extends AppCompatActivity {
                             Log.d("MOOVES",Integer.toString(total_moves));
                             if (game.checkWin(x)){
                                 createNewVictoryDialog();
+                                loadInitialState(game);
                             }
                             break;
 
