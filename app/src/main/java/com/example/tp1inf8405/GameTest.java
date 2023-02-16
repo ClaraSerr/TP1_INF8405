@@ -594,6 +594,11 @@ public class GameTest extends AppCompatActivity {
         game3.game_ready();
 
     }
+    public void back_menu(View v){
+        //test from Studio 3
+        Intent i= new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

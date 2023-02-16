@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void exit() {
+    public void exit(View v) {
         // super.onBackPressed();
         finish();
     }
